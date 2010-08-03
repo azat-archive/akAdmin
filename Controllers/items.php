@@ -38,12 +38,10 @@ function add($sid) {
 		return $d->content('default/error.php');
 	}
 	
-	// set items model properties
 	$i->table = $sectionInfo['tableName'];
-	$fieldsFromTable = $s->getTableFields($i->table);
-	$fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
+	$i->fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
 	
-	// get avaliable fields
+	// get avaliable fields (that set up in Settings page of section-table)
 	$allAvaliableFields = $f->getTranslationForSection($sid);
 	// no fields is set
 	if (!$allAvaliableFields) {
@@ -52,14 +50,13 @@ function add($sid) {
 	}
 	
 	// add auto_increment field to the begining of array
-	$fields = array($fieldAutoIncrement => $fieldAutoIncrement);
+	$fields = array($i->fieldAutoIncrement => $i->fieldAutoIncrement);
 	// type of fields, classes begining from FieldType
 	$fieldTypes = array();
 	foreach ($allAvaliableFields as $field) {
 		$fields[$field['field']] = ($field['value'] ? $field['value'] : '&nbsp;');
 		$fieldTypes[$field['field']] = $field['type'];
 	}
-	// set fields
 	$i->fields = $fields;
 	$i->fieldTypes = $fieldTypes;
 	
@@ -76,7 +73,7 @@ function add($sid) {
 	}
 	// build tree of parent sections
 	$d->set('sectionTree', $s->buildTree($sectionInfo));
-	$d->set('fieldAutoIncrement', $fieldAutoIncrement);
+	$d->set('fieldAutoIncrement', $i->fieldAutoIncrement);
 	$d->set('title', sprintf('Add new item to section %s', $sectionInfo['title']));
 	$d->set('item', $i->getEmpty());
 	
@@ -102,15 +99,12 @@ function edit($sid, $id) {
 	}
 	
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'update')) {
-		$d->set('error', sprintf('Your don`t have permission to update items in section %s.', $sectionInfo));
+		$d->set('error', sprintf('Your don`t have permission to update items in section %s.', $sectionInfo['title']));
 		return $d->content('default/error.php');
 	}
 	
-	// set items model properties
 	$i->table = $sectionInfo['tableName'];
-	$fieldsFromTable = $s->getTableFields($i->table);
-	$fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
-	$i->fieldAutoIncrement = $fieldAutoIncrement;
+	$i->fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
 	
 	// no auto increment field
 	if (!$i->fieldAutoIncrement) {
@@ -118,7 +112,7 @@ function edit($sid, $id) {
 		return $d->content('default/error.php');
 	}
 	
-	// get avaliable fields
+	// get avaliable fields (that set up in Settings page of section-table)
 	$allAvaliableFields = $f->getTranslationForSection($sid);
 	// no fields is set
 	if (!$allAvaliableFields) {
@@ -127,7 +121,7 @@ function edit($sid, $id) {
 	}
 	
 	// add auto_increment field to the begining of array
-	$fields = array($fieldAutoIncrement => $fieldAutoIncrement);
+	$fields = array($i->fieldAutoIncrement => $i->fieldAutoIncrement);
 	// type of fields, classes begining from FieldType
 	$fieldTypes = array();
 	foreach ($allAvaliableFields as $field) {
@@ -159,7 +153,7 @@ function edit($sid, $id) {
 	$d->set('sectionTree', $s->buildTree($sectionInfo));
 	$d->set('item', $item);
 	$d->set('title', sprintf('Edit item in section %s', $sectionInfo['title']));
-	$d->set('fieldAutoIncrement', $fieldAutoIncrement);
+	$d->set('fieldAutoIncrement', $i->fieldAutoIncrement);
 	$d->set('fields', $fields);
 	
 	return $d->content('items/form.php');
@@ -190,15 +184,13 @@ function erase() {
 	}
 	
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'delete')) {
-		$d->set('error', sprintf('Your don`t have permission to delete from section %s.', $sectionInfo));
+		$d->set('error', sprintf('Your don`t have permission to delete from section %s.', $sectionInfo['title']));
 		return $d->content('default/error.php');
 	}
 	
 	// set items model properties
 	$i->table = $sectionInfo['tableName'];
-	$fieldsFromTable = $s->getTableFields($i->table);
-	$fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
-	$i->fieldAutoIncrement = $fieldAutoIncrement;
+	$i->fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
 	
 	// no auto increment field
 	if (!$i->fieldAutoIncrement) {
@@ -240,14 +232,13 @@ function duplicate() {
 	}
 	
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, array('insert', 'select'))) {
-		$d->set('error', sprintf('Your don`t have permission to add to section %s or select from it.', $sectionInfo));
+		$d->set('error', sprintf('Your don`t have permission to add to section %s or select from it.', $sectionInfo['title']));
 		return $d->content('default/error.php');
 	}
 	
 	// set items model properties
 	$i->table = $sectionInfo['tableName'];
-	$fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
-	$i->fieldAutoIncrement = $fieldAutoIncrement;
+	$i->fieldAutoIncrement = $s->getTableAutoIncrementField($i->table);
 	
 	// no auto increment field
 	if (!$i->fieldAutoIncrement) {
@@ -255,7 +246,7 @@ function duplicate() {
 		return $d->content('default/error.php');
 	}
 	
-	// get avaliable fields
+	// get avaliable fields (that set up in Settings page of section-table)
 	$allAvaliableFields = $f->getTranslationForSection($sid);
 	// no fields is set
 	if (!$allAvaliableFields) {
@@ -264,7 +255,7 @@ function duplicate() {
 	}
 	
 	// add auto_increment field to the begining of array
-	$fields = array($fieldAutoIncrement => $fieldAutoIncrement);
+	$fields = array($i->fieldAutoIncrement => $i->fieldAutoIncrement);
 	foreach ($allAvaliableFields as $field) {
 		$fields[$field['field']] = $field['value'];
 	}
@@ -282,7 +273,7 @@ function duplicate() {
 		}
 		
 		// delete auto increment field, it nums update by DB server
-		unset($item[$fieldAutoIncrement]);
+		unset($item[$i->fieldAutoIncrement]);
 		
 		// creating copies/ duplicate
 		for ($inc = 1; $inc <= $num; $inc++) {

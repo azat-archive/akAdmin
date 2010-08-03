@@ -43,7 +43,7 @@ div#mainWrapper ul.form li input, div#mainWrapper ul.form li textarea {width: 40
 div#mainWrapper ul.form li input.small, div#mainWrapper ul.form li textarea.small {width: 50px;}
 div#mainWrapper ul.form li textarea {height: 400px;}
 div#mainWrapper ul.form li input[type="submit"], ul.form li input[type="button"] {text-align: center; width: 180px; font-weight: bold;}
-div#mainWrapper ul.form li input[type="checkbox"] {width: 20px;}
+div#mainWrapper ul.form li input[type="checkbox"], div#mainWrapper ul.form li input[type="radio"] {width: 20px;}
 /*\forms*/
 
 /*mainError*/

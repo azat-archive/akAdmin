@@ -34,6 +34,7 @@ class Fields {
 		'Image',
 		'UnixtimeStamp',
 		'Bool',
+		'String',
 	);
 	/**
 	 * Array of types with types by DB type

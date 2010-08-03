@@ -201,8 +201,6 @@ function detailsTable(array &$info) {
 		return $d->content('default/error.php');
 	}
 	
-	// get fields list for table
-	$fieldsFromTable = $s->getTableFields($info['tableName'], true);
 	// get auto_increment field from table
 	$fieldAutoIncrement = $s->getTableAutoIncrementField($info['tableName']);
 	if (!$fieldAutoIncrement) {
@@ -226,7 +224,7 @@ function detailsTable(array &$info) {
 	$searchQuery = urldecode($d->getParam('q'));
 	$d->set('searchQuery', $searchQuery);
 	
-	// get avaliable fields
+	// get avaliable fields (that set up in Settings page of section-table)
 	$allAvaliableFields = $f->getTranslationForSection($d->getParam('sid'));
 	// no fields is set
 	if (!$allAvaliableFields) {
@@ -282,14 +280,16 @@ function settings($sid) {
 	$fieldsFromTable = $s->getTableFields($currentSection['tableName'], true);
 	// get avaliable fields
 	$allAvaliableFields = $f->getTranslationForSection($sid, true);
-	// join fields from table & avaliable fields with translation
+	// join fields from table (DESCRIBE table query) & avaliable fields with translation (that set up in Settings page of section-table)
 	$fields = array();
 	foreach ($fieldsFromTable as &$field) {
+		// standart
 		$fields[$field['Field']] = array(
 			'value' => $field['Field'],
 			'hidden' => false,
 			'type' => 'html',
 			'DBType' => $field['DBType'],
+			'sequence' => 0,
 		);
 		if (!$allAvaliableFields) continue;
 		

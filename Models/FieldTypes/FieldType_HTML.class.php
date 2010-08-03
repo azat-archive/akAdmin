@@ -3,6 +3,8 @@
 /**
  * HTML FieldType
  * 
+ * @TODO Add WYSIWYG editor (i.e. TinyMCE)
+ * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
  * @licence GPLv2
@@ -23,7 +25,7 @@ class FieldType_HTML extends FieldTypes {
 	
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
-			'<label><strong>%s</strong><input type="text" name="%s" value="%s" /></label>',
+			'<label><strong>%s</strong><textarea name="%s">%s</textarea></label>',
 			$fieldTransltaion, $field, $this->get($value)
 		);
 	}

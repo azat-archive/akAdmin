@@ -15,7 +15,7 @@
 				if (isset($DBTypes[$field['DBType']]) && is_array($DBTypes[$field['DBType']])) {
 					foreach ($DBTypes[$field['DBType']] as $type) {
 				?>
-				<option value="<?=$type?>"><?=$type?></option>
+				<option value="<?=$type?>"<?=($field['type'] == $type ? ' selected' : null)?>><?=$type?></option>
 				<?
 					}
 				}

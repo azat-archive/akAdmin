@@ -1,19 +1,19 @@
 <?
 
 /**
- * Text FieldType
+ * String FieldType
  * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
  * @licence GPLv2
  */
 
-class FieldType_Text extends FieldTypes {
+class FieldType_String extends FieldTypes {
 	public $DBTypes = array('text', 'varchar', 'char');
 
 	static function getInstance() {
 		static $object;
-		if (!$object) $object = new FieldType_Text;
+		if (!$object) $object = new FieldType_String;
 		return $object;
 	}
 
@@ -23,7 +23,7 @@ class FieldType_Text extends FieldTypes {
 
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
-			'<label><strong>%s</strong><textarea name="%s">%s</textarea></label>',
+			'<label><strong>%s</strong><input type="text" name="%s" value="%s" /></label>',
 			$fieldTransltaion, $field, $this->get($value)
 		);
 	}
