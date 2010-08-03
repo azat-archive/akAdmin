@@ -58,7 +58,7 @@ class FieldType_Image extends FieldTypes {
 		
 		preg_match('@(\d+?)x(\d+?)@Uis', self::$previewSizes[0], $size);
 		return sprintf(
-			'<a href="%s%s"><img src="%s%u_%u_%u_%s" alt="" /></a>',
+			'<a href="%s%s"><img src="%s%u_%u_%u_%s" alt="" title="Zoom in image" /></a>',
 			self::$path, $value, self::$previewPath, $size[1], $size[2], self::$previewQuality, $value
 		);
 	}
@@ -82,7 +82,10 @@ class FieldType_Image extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !$value) return null;
+		
+		global $m;
+		return sprintf('`%s` LIKE "%%%s%%"', $m->escape($field), $m->escape($value));
 	}
 
 	/**
@@ -109,7 +112,7 @@ class FieldType_Image extends FieldTypes {
 		if ($delete || ($newFile && $newFile['error'] != 4)) {
 			if ($oldFile && file_exists($oldFile)) {
 				if (!unlink($oldFile)) {
-					throw new akException('Error occured while deleting old file.');
+					throw new akException('Error occured while deleting old file. Path: "%s".', self::$path);
 				}
 				// delete all previews
 				foreach ($previewSizes as $size) {
@@ -127,7 +130,7 @@ class FieldType_Image extends FieldTypes {
 			}
 			
 			if (!copy($newFile['tmp_name'], sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				throw new akException('Error occured while copy new file.');
+				throw new akException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
 			}
 			
 			// generate previews

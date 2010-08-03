@@ -100,10 +100,10 @@ class Items {
 		
 		if ($q) {
 			$where = array();
-			foreach (array_map(array($m, 'escape'), array_keys($this->fields)) as $field) {
-				$where[$field . ' LIKE '] = $q;
+			foreach ($this->fieldTypes as $field => &$type) {
+				$where[] = $f::$types[$type]->getForSearch($field, $q);
 			}
-			$where = $m->orJoin($where, true, '("%', '%")');
+			$where = join(' OR ', arrayEraseEmpty($where));
 		} else {
 			$where = null;
 		}
@@ -160,12 +160,14 @@ class Items {
 		
 		global $m;
 		
+		$f = Fields::getInstance();
+		
 		if ($q) {
 			$where = array();
-			foreach (array_map(array($m, 'escape'), array_keys($this->fields)) as $field) {
-				$where[$field . ' LIKE '] = $q;
+			foreach ($this->fieldTypes as $field => &$type) {
+				$where[] = $f::$types[$type]->getForSearch($field, $q);
 			}
-			$where = $m->orJoin($where, true, '("%', '%")');
+			$where = join(' OR ', arrayEraseEmpty($where));
 		} else {
 			$where = null;
 		}

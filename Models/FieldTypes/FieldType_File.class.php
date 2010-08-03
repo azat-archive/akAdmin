@@ -52,7 +52,10 @@ class FieldType_File extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !$value) return null;
+		
+		global $m;
+		return sprintf('`%s` LIKE "%%%s%%"', $m->escape($field), $m->escape($value));
 	}
 
 	/**
@@ -74,7 +77,7 @@ class FieldType_File extends FieldTypes {
 		if ($delete || ($newFile && $newFile['error'] != 4)) {
 			if ($oldFile && file_exists($oldFile)) {
 				if (!unlink($oldFile)) {
-					throw new akException('Error occured while deleting old file.');
+					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 				}
 			}
 			$newFileName = null;
@@ -87,7 +90,7 @@ class FieldType_File extends FieldTypes {
 			}
 			
 			if (!copy($newFile['tmp_name'], sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				throw new akException('Error occured while copy new file.');
+				throw new akException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
 			}
 		}
 		

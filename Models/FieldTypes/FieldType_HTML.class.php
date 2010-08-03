@@ -43,7 +43,10 @@ class FieldType_HTML extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !$value) return null;
+		
+		global $m;
+		return sprintf('`%s` LIKE "%%%s%%"', $m->escape($field), $m->escape(htmlspecialchars_decode($value)));
 	}
 
 	/**

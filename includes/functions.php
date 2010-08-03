@@ -157,3 +157,16 @@ function randomStr($length = 10) {
 	}
 	return $str;
 }
+
+/**
+ * Delete from array empty items
+ * 
+ * @param array $array - array
+ * @return array
+ */
+function arrayEraseEmpty(array &$array) {
+	foreach ($array as $k => &$value) {
+		if (!$value) unset($array[$k]);
+	}
+	return $array;
+}

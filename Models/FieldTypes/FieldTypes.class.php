@@ -51,8 +51,6 @@ abstract class FieldTypes {
 	 * This will be called for every DB item when select it from DB
 	 * And it callled when search in Table
 	 * 
-	 * @TODO WRITE THIS PART
-	 * 
 	 * @param string $field - field
 	 * @param string $value - value
 	 * @return string

@@ -43,7 +43,10 @@ class FieldType_Bool extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !in_array($value, array('yep', 'nope'))) return null;
+		
+		global $m;
+		return sprintf('`%s` = %s', $m->escape($field), ($value == 'yep' ? 'TRUE' : 'FALSE'));
 	}
 
 	/**

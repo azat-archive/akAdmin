@@ -41,7 +41,10 @@ class FieldType_Numeric extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !$value || !is_numeric($value)) return null;
+		
+		global $m;
+		return sprintf('`%s` LIKE "%%%s%%"', $m->escape($field), $m->escape((float)$value));
 	}
 
 	/**

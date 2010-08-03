@@ -47,7 +47,10 @@ class FieldType_UnixtimeStamp extends FieldTypes {
 	 * @see parent::getForSearch()
 	 */
 	public function getForSearch($field = null, $value = null) {
-		throw new akException('WRITE THIS PART');
+		if (!$field || !$value || !strtotime($value)) return null;
+		
+		global $m;
+		return sprintf('`%s` LIKE "%%%s%%"', $m->escape($field), $m->escape(strtotime($value)));
 	}
 
 	/**
