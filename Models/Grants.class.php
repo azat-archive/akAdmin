@@ -83,7 +83,7 @@ class Grants {
 		if ($asArray) {
 			$result = self::$grants;
 			foreach ($result as $name => &$value) {
-				$value = ($value & $grantsBin ? true : false);
+				$value = ($value & (int)$grantsBin ? true : false);
 			}
 			return $result;
 		}

@@ -1,6 +1,6 @@
 <?=$this->content('header.php');?>
 <?=$this->content('sections/tree.php');?>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<ul class="form">
 		<?foreach ($item as $key => &$field) {?>
 			<li><?=$field?></li>

@@ -63,7 +63,13 @@ function add($sid) {
 	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 		// delete not existed fields
 		foreach ($_POST as $key => &$value) {
-			if (!in_array($key, array_keys($fields))) unset($_POST[$key]);
+			if (!in_array($key, array_keys($fields))) {
+				unset($_POST[$key]);
+			} else {
+				if (isset($_FILES[$key])) {
+					$value['file'] = &$_FILES[$key];
+				}
+			}
 		}
 		
 		if ($id = $i->add($_POST)) {
@@ -141,7 +147,13 @@ function edit($sid, $id) {
 	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 		// delete not existed fields
 		foreach ($_POST as $key => &$value) {
-			if (!in_array($key, array_keys($fields))) unset($_POST[$key]);
+			if (!in_array($key, array_keys($fields))) {
+				unset($_POST[$key]);
+			} else {
+				if (isset($_FILES[$key])) {
+					$value['file'] = &$_FILES[$key];
+				}
+			}
 		}
 		
 		if ($i->edit($_POST, $id)) {

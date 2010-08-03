@@ -15,6 +15,9 @@ class FieldType_File extends FieldTypes {
 	 * @var string
 	 */
 	static $path = '/tmp/';
+	/**
+	 * @see parent::$DBTypes
+	 */
 	public $DBTypes = array('text', 'varchar', 'char');
 
 	static function getInstance() {
@@ -23,11 +26,17 @@ class FieldType_File extends FieldTypes {
 		return $object;
 	}
 
+	/**
+	 * @see parent::get()
+	 */
 	public function get($value = null) {
 		if (!$value) return null;
 		return sprintf('<a href="%s%s">%s</a>', self::$path, $value, $value);
 	}
 
+	/**
+	 * @see parent::getForEdit()
+	 */
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
 			'<label><strong>%s</strong><input type="file" name="%s" /></label>' .
@@ -39,10 +48,18 @@ class FieldType_File extends FieldTypes {
 		);
 	}
 
+	/**
+	 * @see parent::getForSearch()
+	 */
 	public function getForSearch($field = null, $value = null) {
 		throw new akException('WRITE THIS PART');
 	}
 
+	/**
+	 * @see parent::set()
+	 * 
+	 * @throws akException if error occured while deleting file or uploading new file
+	 */
 	public function set($value = null) {
 		// old file (to delete)
 		$oldFile = ($value['old'] ? sprintf('%s/%s', realpath(dirRoot . self::$path), $value['old']) : null);

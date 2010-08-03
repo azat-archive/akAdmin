@@ -44,6 +44,7 @@ div#mainWrapper ul.form li input.small, div#mainWrapper ul.form li textarea.smal
 div#mainWrapper ul.form li textarea {height: 400px;}
 div#mainWrapper ul.form li input[type="submit"], ul.form li input[type="button"] {text-align: center; width: 180px; font-weight: bold;}
 div#mainWrapper ul.form li input[type="checkbox"], div#mainWrapper ul.form li input[type="radio"] {width: 20px;}
+div#mainWrapper ul.form li input[type="file"] {width: 100px;}
 /*\forms*/
 
 /*mainError*/

@@ -143,3 +143,17 @@ function getTextLimited($text, $length = 300, $add = '...', $substrOnly = false)
 	}
 	return $text;
 }
+
+/**
+ * Generate random string
+ * 
+ * @param int $length
+ * @return string
+ */
+function randomStr($length = 10) {
+	$str = '';
+	for ($i = 0; $i < $length; $i++) {
+		$str .= (rand(1, 2) == 2 ? rand(0, 9) : chr(rand(ord('a'), ord('z'))));
+	}
+	return $str;
+}
