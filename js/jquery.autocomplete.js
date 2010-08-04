@@ -1,3 +1,8 @@
+/*
+ * Edited by Azat Khuzhin <dohardgopro@gmail.com>
+ * To use JSON
+ */
+
 jQuery.autocomplete = function(input, options) {
 	// Create a link to self
 	var		me = this;
