@@ -85,7 +85,8 @@ class Fields {
 			foreach (self::$avaliableTypes as $type) {
 				$className = 'FieldType_' . $type;
 				require_once $path . $className . '.class.php';
-				self::$types[$type] = $className::getInstance();
+				// adapted for PHP < 5.3
+				self::$types[$type] = call_user_func($className . '::getInstance');
 			}
 		}
 		
