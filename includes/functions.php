@@ -45,7 +45,12 @@ function getFromSome() {
 	}
 	return null;
 }
-function gfs() { return call_user_func_array('getFromSome', func_get_args());}
+// update for PHP < 5.3
+// PHP < 5.3 don`t accpet func_get_args() as param for call_user_func_array
+function gfs() {
+	$params = func_get_args();
+	return call_user_func_array('getFromSome', $params);
+}
 
 /**
  * Check is email valid
