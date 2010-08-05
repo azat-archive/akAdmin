@@ -15,7 +15,7 @@
 
 akAdmin - Azat Khuzhin Admin System
 Begin date: 20.07.10
-Requires: >= PHP 5.3
+Requires: >= PHP 5.2
 Please use set_include_path() function
 And don`t forget about extract() function
 And using Exceptions
