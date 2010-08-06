@@ -155,14 +155,14 @@ class akImage {
 						$scale = (imagesx($image) / $y);
 						break;
 					case self::resizeByXY:
-						$scale = (imagesx($image) > imagesy($image) ? (imagesy($image) / $y) : (imagesx($image) / $x));
+						$scale = (imagesx($image) < imagesy($image) ? (imagesy($image) / $y) : (imagesx($image) / $x));
 						break;
 				}
 				
 				// lost of quality maybe
 				if ($scale > 1 || $zoom) {
-					$newX = round($newX / $scale);
-					$newY = round($newY / $scale);
+					$newX = round(imagesx($image) / $scale);
+					$newY = round(imagesy($image) / $scale);
 				} else {
 					return $this->gdSave($image, $dst, $q);
 				}
@@ -210,6 +210,24 @@ class akImage {
 			return $this->gdSave($image, $dst, $q);
 		}
 		return false;
+	}
+
+	/**
+	 * Write image to STDOUT
+	 * 
+	 * @return void
+	 * 
+	 * @throws akException
+	 */
+	public function write() {
+		if ((!extension_loaded('gd') && !extension_loaded('gd2'))) {
+			throw new akException('No GD found');
+		}
+		
+		$ext = $this->extensionCheck($this->srcPath);
+		header('Content-type: image/' . $ext);
+		$image = call_user_func_array('imagecreatefrom' . $ext, array($this->srcPath));
+		call_user_func_array('image' . $ext, array($image));
 	}
 
 	/**
