@@ -18,7 +18,7 @@
 				'<a%s href="/section/details/%u%s%s/sort/%s%s">%s</a>',
 				(mb_substr(mb_strtolower($sort), 0, mb_strlen($fieldName)) == mb_strtolower($fieldName) ? ' class="selected"' : null),
 				$currentSection['id'],
-				($searchQuery ? sprintf('/search/%s', $searchQuery) : null),
+				($searchQuery ? sprintf('/search/%s', urlencode($searchQuery)) : null),
 				($page ? sprintf('/page/%u', $page) : null),
 				$fieldName,
 				((mb_substr(mb_strtolower($sort), 0, mb_strlen($fieldName)) == mb_strtolower($fieldName) && mb_substr($sort, -4) != 'desc') ? ' desc' : null),
@@ -78,9 +78,7 @@
 		pagesTotal:<?=$pages?>, 
 		pagesSpan:10, 
 		pageCurrent:<?=$page?>, 
-		baseUrl: function (pageNum) {
-			location.href = '/section/details/<?=$currentSection['id']?>/<?=($searchQuery ? sprintf('search/%s/', $searchQuery) : null)?>page/' + pageNum + '<?=($sort ? sprintf('/sort/%s', $sort) : null)?>';
-		},
+		baseUrl: '/section/details/<?=$currentSection['id']?>/<?=($searchQuery ? sprintf('search/%s/', urlencode($searchQuery)) : null)?>page/%number%<?=($sort ? sprintf('/sort/%s', $sort) : null)?>',
 		lang: {
 			next  : "Next",
 			last  : "Last",
