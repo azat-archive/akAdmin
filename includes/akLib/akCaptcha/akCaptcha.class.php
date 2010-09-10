@@ -26,6 +26,25 @@ class akCaptcha {
 	 */
 	const sessionKey = 'akCaptcha';
 	/**
+	 * Type of CAPTCHA
+	 * 
+	 * Digits and letters
+	 * @default
+	 */
+	const digitsAndLetters = 1;
+	/**
+	 * Type of CAPTCHA
+	 * 
+	 * Only digits
+	 */
+	const onlyDigits = 2;
+	/**
+	 * Type of CAPTCHA
+	 * 
+	 * Only letters
+	 */
+	const onlyLetters = 3;
+	/**
 	 * Minimum captcha length
 	 * 
 	 * @var int
@@ -68,6 +87,18 @@ class akCaptcha {
 	 */
 	public $fontSize = 15;
 	/**
+	 * Font color in RGB
+	 * 
+	 * @var array of int
+	 */
+	public $fontColor = array(128, 128, 128);
+	/**
+	 * BG Font color in RGB
+	 * 
+	 * @var array of int
+	 */
+	public $bgFontColor = array(255, 255, 255);
+	/**
 	 * Rewrite old captcha
 	 * If max captcha session num is achieved
 	 * 
@@ -78,9 +109,20 @@ class akCaptcha {
 	 * Case sensetive check for captcha exists
 	 * 
 	 * @see this::exists()
+	 * @see this::delete()
 	 * @var bool
 	 */
 	public $caseSensetive = false;
+	/**
+	 * Type of captcha
+	 * 
+	 * @see this::digitsAndLetters - default
+	 * @see this::onlyDigits
+	 * @see this::onlyLetters
+	 * 
+	 * @var int
+	 */
+	public $type;
 	/**
 	 * List with captcha's
 	 * 
@@ -95,11 +137,12 @@ class akCaptcha {
 	 * @see this::validate()
 	 * @return void
 	 */
-	public function __construct($minLength = null, $maxLength = null, $maxNum = null) {
+	public function __construct($minLength = null, $maxLength = null, $maxNum = null, $type = null) {
 		// properties
 		if ($minLength) $this->minLength = (int)$minLength;
 		if ($maxLength) $this->maxLength = (int)$maxLength;
 		if ($maxNum) $this->maxNum = (int)$maxNum;
+		$this->type = ($type ? $type : self::digitsAndLetters);
 		
 		$this->validate();
 		
@@ -125,18 +168,33 @@ class akCaptcha {
 	 * Generate random string
 	 * Only big leters
 	 * 
+	 * @see this::onlyDigits
+	 * @see this::onlyLetters
+	 * @see this::digitsAndLetters
+	 * 
 	 * @return string
 	 */
 	protected function randomString() {
 		$to = 0;
+		// not to have $to = 0
 		while ($to == 0) {
 			$to = rand($this->minLength, $this->maxLength);
 		}
 		
 		$string = '';
 		for ($i = 0; $i < $to; $i++) {
-			if (rand(1, 2) % 2 == 1) $string .= rand(1, 9);
-			else $string .= chr(rand(65, 90));
+			switch ($this->type) {
+				case self::onlyDigits:
+					$string .= rand(1, 9);
+					break;
+				case self::onlyLetters:
+					$string .= chr(rand(65, 90));
+					break;
+				default: // self::digitsAndLetters
+					if (rand(1, 2) % 2 == 1) $string .= rand(1, 9);
+					else $string .= chr(rand(65, 90));
+					break;
+			}
 		}
 		return $string;
 	}
@@ -189,11 +247,10 @@ class akCaptcha {
 		// generate image
 		$captcha = imagecreatetruecolor($this->width, $this->height);
 		// colors
-		$white = imagecolorallocate($captcha, 255, 255, 255);
-		$grey = imagecolorallocate($captcha, 128, 128, 128);
-		$black = imagecolorallocate($captcha, 0, 0, 0);
+		$fontColor = imagecolorallocate($captcha, $this->fontColor[0], $this->fontColor[3], $this->fontColor[2]);
+		$bgColor = imagecolorallocate($captcha, $this->bgFontColor[0], $this->bgFontColor[1], $this->bgFontColor[2]);
 		// background
-		imagefill($captcha, 0, 0, $white);
+		imagefill($captcha, 0, 0, $bgColor);
 		// add string to image
 		$margin = 0;
 		
@@ -203,7 +260,7 @@ class akCaptcha {
 		// write text
 		for ($i = 0, $margin = $marginX; $i < strlen($value); $i++, $margin += $symbolSize) {
 			// cat symbol with random angel
-			imagettftext($captcha, $this->fontSize, (rand(0, 50)+1), $margin, $this->height, $grey, $this->fontPath, $value[$i]);
+			imagettftext($captcha, $this->fontSize, (rand(0, 50)+1), $margin, $this->height, $fontColor, $this->fontPath, $value[$i]);
 		}
 		// add to captcha's list
 		$this->list[] = $value;
@@ -216,6 +273,7 @@ class akCaptcha {
 
 	/**
 	 * Check is such captcha exists
+	 * If exists than return true and delete it from list of captcha's
 	 * 
 	 * @see this::caseSensetive
 	 * @param string $value - value of captcha
@@ -223,10 +281,18 @@ class akCaptcha {
 	 */
 	public function exists($value) {
 		if ($this->caseSensetive) {
-			return in_array($value, $this->list);
+			if (in_array($value, $this->list)) {
+				$this->delete($value);
+				return true;
+			}
 		} else {
-			return in_array(mb_strtolower($value), array_map('mb_strtolower', $this->list));
+			if (in_array(mb_strtolower($value), array_map('mb_strtolower', $this->list))) {
+				$this->delete($value);
+				return true;
+			}
 		}
+		
+		return false;
 	}
 
 	/**
@@ -236,10 +302,14 @@ class akCaptcha {
 	 * @return bool (true - deleted, otherwise - false (i.e. if not found such captcha))
 	 */
 	public function delete($value) {
-		$key = array_search($value, $this->list);
-		if ($key !== false) {
-			unset($this->list[$key]);
-			return true;
+		if (!$value) return false;
+		
+		// because of caseSensetive option wee need use foreach
+		foreach ($this->list as $key => &$item) {
+			if (($this->caseSensetive && $item == $value) || (mb_strtolower($item) == mb_strtolower($value))) {
+				unset($this->list[$key]);
+				return true;
+			}
 		}
 		
 		// not found
