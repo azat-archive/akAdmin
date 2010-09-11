@@ -119,7 +119,7 @@ class FieldType_Image extends FieldTypes {
 		if ($delete || ($newFile && $newFile['error'] != 4)) {
 			if ($oldFile && file_exists($oldFile)) {
 				if (!unlink($oldFile)) {
-					throw new akException('Error occured while deleting old file. Path: "%s".', self::$path);
+					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 				}
 				// delete all previews
 				foreach ($previewSizes as $size) {

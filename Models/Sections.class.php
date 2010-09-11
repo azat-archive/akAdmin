@@ -50,7 +50,7 @@ class Sections {
 	 * 
 	 * This function check user grants
 	 * 
-	 * @example to ge root sections $data = array('parentid' = 0)
+	 * @example to get root sections $data = array('parentid' = 0)
 	 * 
 	 * @param array $data - data to get sections with
 	 * @param int $offset - offset
@@ -165,8 +165,7 @@ class Sections {
 	public function erase($id) {
 		global $m;
 		
-		if ($m->sprintf('DELETE FROM %s WHERE id = %u', self::$table, $id)) {
-			/// @TODO delete grants using Grants model
+		if ($g->erase(array('sid' => $id)) && $m->sprintf('DELETE FROM %s WHERE id = %u', self::$table, $id)) {
 			return true;
 		}
 		return false;

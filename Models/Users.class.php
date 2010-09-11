@@ -19,6 +19,22 @@
 
 class Users {
 	/**
+	 * Attempts time,
+	 * after what user can try to login again
+	 */
+	const attemptsTime = 600;
+	/**
+	 * Attempts limit
+	 */
+	const attemptsLimit = 5;
+	/**
+	 * Array of attempts
+	 * Link to _SESSION array
+	 * 
+	 * @var array
+	 */
+	static $attempts;
+	/**
 	 * Table with users
 	 * 
 	 * @var string
@@ -248,5 +264,40 @@ class Users {
 		if ($currentLogin) $params['login !='] = $currentLogin;
 		
 		return ($m->numRows($m->sprintf('SELECT id FROM %s WHERE %s LIMIT 1', self::$table, $m->andJoin($params))) ? true : false);
+	}
+	
+	/**
+	 * Check attempts limit exhausted
+	 * 
+	 * @see this::attemptsTime
+	 * @see this::attemptsLimit
+	 * 
+	 * @return bool (true if limit is exhausted, otherwise false)
+	 */
+	public function attemptsLimitExhausted() {
+		$this->addAttempt();
+		
+		// delete old attempts
+		foreach (self::$attempts as $key => &$attempt) {
+			if ((time() - $attempt) >= self::attemptsTime) {
+				unset(self::$attempts[$key]);
+			}
+		}
+		// check
+		return (count(self::$attempts) > self::attemptsLimit);
+	}
+	
+	/**
+	 * Add attempt to list
+	 * 
+	 * @return void
+	 */
+	public function addAttempt() {
+		if (!is_array(self::$attempts)) {
+			if (!isset($_SESSION['attemptsCount'])) $_SESSION['attemptsCount'] = array();
+			self::$attempts = &$_SESSION['attemptsCount'];
+		}
+		
+		self::$attempts[] = time();
 	}
 }

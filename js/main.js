@@ -80,9 +80,9 @@ var deletingConfirm = {
 /*\deleteing projects and tables*/
 
 /*
- * fullBetaTree
+ * fullTree
  * 
- * Full beta tree - is a tree of users
+ * Full tree - is a tree of users
  * That append some buttons with avaliable grants to select, when your clicking by user,
  * and delete all buttons and input assigned with it on clicking to already clicked user,
  * when your clicking by some of grants it adds input element
@@ -91,16 +91,16 @@ var deletingConfirm = {
  * 
  * And there is an attr for already existed users grants (when page is loading)
  */
-var fullBetaTree = {
-	selector: 'ul#fullBetaTree li',
+var fullTree = {
+	selector: 'ul#fullTree li',
 	formSelector: 'form[name=grants]',
 	maxGrantsItems: 6,
 	init: function() {
-		$(fullBetaTree.selector).click(function(e) {return fullBetaTree.click(e);});
+		$(fullTree.selector).click(function(e) {return fullTree.click(e);});
 		// append onclick, to already existed span's
-		$(fullBetaTree.selector + ' span:not(.all).exist').parents('li').children('span.grants').children('span').click(function() { fullBetaTree.createGrantsForm(this); });
+		$(fullTree.selector + ' span:not(.all).exist').parents('li').children('span.grants').children('span').click(function() { fullTree.createGrantsForm(this); });
 		// add to form user grants, which already exist
-		$(fullBetaTree.selector + ' span:not(.all).exist').each(function() { return fullBetaTree.createGrantsForm(this, true); });
+		$(fullTree.selector + ' span:not(.all).exist').each(function() { return fullTree.createGrantsForm(this, true); });
 		return true;
 	},
 	/**
@@ -130,7 +130,7 @@ var fullBetaTree = {
 				</span>'
 			);
 			
-			$('span.grants span', el).click(function() { fullBetaTree.createGrantsForm(this, exist); });
+			$('span.grants span', el).click(function() { fullTree.createGrantsForm(this, exist); });
 			return true;
 		}
 	},
@@ -143,7 +143,7 @@ var fullBetaTree = {
 		if (exist && !$(el).hasClass('selected')) return true;
 		
 		var input = $(
-			fullBetaTree.formSelector +
+			fullTree.formSelector +
 			sprintf(' [name="id\\[%u\\]\\[%s\\]"]', $(el).parents('li').get(0).onkeyup(), el.onkeydown())
 		);
 		
@@ -156,15 +156,15 @@ var fullBetaTree = {
 				$(el).parents('li').children('span.grants').children('span:not(.all).selected').click();
 			}
 			$(el).removeClass('selected');
-			fullBetaTree.updateExisted(el);
+			fullTree.updateExisted(el);
 		}
 		// not selected
 		else {
 			if (el.onkeydown() != 'all') {
 				// append input
 				if (exist) {
-					$(fullBetaTree.formSelector).html(
-						$(fullBetaTree.formSelector).html() + 
+					$(fullTree.formSelector).html(
+						$(fullTree.formSelector).html() + 
 						sprintf('<input type="hidden" name="id[%u][%s]" value="exist" />',
 						$(el).parents('li').get(0).onkeyup(), el.onkeydown())
 					);
@@ -172,8 +172,8 @@ var fullBetaTree = {
 					if (input.length) {
 						input.val(true);
 					} else {
-						$(fullBetaTree.formSelector).html(
-							$(fullBetaTree.formSelector).html() + 
+						$(fullTree.formSelector).html(
+							$(fullTree.formSelector).html() + 
 							sprintf('<input type="hidden" name="id[%u][%s]" value="true" />',
 							$(el).parents('li').get(0).onkeyup(), el.onkeydown())
 						);
@@ -184,8 +184,8 @@ var fullBetaTree = {
 			}
 			// add class that selected
 			$(el).addClass('selected');
-			if (!exist) fullBetaTree.updateExisted(el);
-			fullBetaTree.changeAllIfNeed(el);
+			if (!exist) fullTree.updateExisted(el);
+			fullTree.changeAllIfNeed(el);
 		}
 	},
 	/**
@@ -199,7 +199,7 @@ var fullBetaTree = {
 		
 		$(el).parent().children('span:not(.all).exist').each(function() {
 			var input = $(
-				fullBetaTree.formSelector +
+				fullTree.formSelector +
 				sprintf(' [name="id\\[%u\\]\\[%s\\]"]', $(this).parents('li').get(0).onkeyup(), this.onkeydown())
 			);
 			
@@ -221,14 +221,14 @@ var fullBetaTree = {
 		// if all already selected, append class "selected" to "all" item
 		grantsItems = 0;
 		$(el).parent().children('span:not(.all).selected').each(function() { if ($(this).hasClass('selected')) grantsItems++; });
-		if (grantsItems == fullBetaTree.maxGrantsItems) {
+		if (grantsItems == fullTree.maxGrantsItems) {
 			$(el).parent().children('span.all').addClass('selected');
 		} else {
 			$(el).parent().children('span.all').removeClass('selected');
 		}
 	}
 }
-/*fullBetaTree*/
+/*fullTree*/
 
 /*
  * search
@@ -385,7 +385,7 @@ $(document).ready(function() {
 	mainError.init();
 	autoComplete.init();
 	deletingConfirm.init();
-	fullBetaTree.init();
+	fullTree.init();
 	search.init();
 	multiActions.init();
 });

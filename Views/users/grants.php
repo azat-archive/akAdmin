@@ -1,5 +1,5 @@
 <?=$this->content('header.php');?>
-<?=(isset($fullBetaTree) && $fullBetaTree ? $fullBetaTree : null)?>
+<?=(isset($fullTree) && $fullTree ? $fullTree : null)?>
 
 <form name="grants" method="post">
 	<ul class="form">

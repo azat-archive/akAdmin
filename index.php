@@ -51,8 +51,8 @@ else {
 	$d->add('/user/edit/:uid', 'users.php', 'edit', 'post');
 	$d->add('/user/duplicate/:uid/:num', 'users.php', 'duplicate');
 	$d->add('/user/erase/:uid', 'users.php', 'erase');
-	$d->add('/user/beta_grants/:uid', 'users.php', 'betaGrants');
-	$d->add('/user/beta_grants/:uid', 'users.php', 'betaGrants', 'post');
+	$d->add('/user/grants/:uid', 'users.php', 'grants');
+	$d->add('/user/grants/:uid', 'users.php', 'grants', 'post');
 
 	/**
 	 * Controllers from "Controllers/sections.php"

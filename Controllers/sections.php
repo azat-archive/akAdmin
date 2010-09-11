@@ -93,9 +93,8 @@ function edit($sid) {
 	$sid = (int)$sid;
 	// no such section
 	$sectionInfo = $s->details(array('id' => $sid));
-	if (!$sectionInfo) {
-		redirect('/default/404');
-	}
+	if (!$sectionInfo) redirect('/default/404');
+	
 	if ($sectionInfo['pid']) {
 		$parentInfo = $s->simpleList(array('id' => $sectionInfo['pid']), 0, 1);
 		$sectionInfo['parentTitle'] = $parentInfo['title'];
@@ -141,9 +140,7 @@ function erase($sid) {
 	$sid = (int)$sid;
 	// no such section
 	$sectionInfo = $s->details(array('id' => $sid));
-	if (!$sectionInfo) {
-		redirect('/default/404');
-	}
+	if (!$sectionInfo) redirect('/default/404');
 	
 	// check grants
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'drop')) {

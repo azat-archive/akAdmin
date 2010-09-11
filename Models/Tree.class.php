@@ -8,14 +8,14 @@
  */
 
 /**
- * BETA TREE
+ * TREE
  * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
  * @licence GPLv2
  */
 
-class BetaTree extends Sections {
+class Tree extends Sections {
 	/**
 	 * Constructor
 	 * 
@@ -29,11 +29,11 @@ class BetaTree extends Sections {
 	/**
 	 * Fast init
 	 * 
-	 * @return object of BetaTree
+	 * @return object of Tree
 	 */
 	static function getInstance() {
 		static $object;
-		if (!$object) $object = new BetaTree;
+		if (!$object) $object = new Tree;
 		
 		return $object;
 	}
@@ -118,7 +118,7 @@ class BetaTree extends Sections {
 		}
 		// revursive part of function
 		elseif ($data) {
-			$string = '<ul id="fullBetaTree">' . "\n";
+			$string = '<ul id="fullTree">' . "\n";
 			foreach ($data as &$item) {
 				// flush
 				$grantsString = '';

@@ -13,7 +13,7 @@
 			<nobr>
 			<a href="/user/edit/<?=$userInfo['id']?>">Edit</a>
 			<?if ($user['isAdmin']) {?>
-			<a href="/user/beta_grants/<?=$userInfo['id']?>">Grants (Beta version)</a>
+			<a href="/user/grants/<?=$userInfo['id']?>">Grants</a>
 			<a href="/user/erase/<?=$userInfo['id']?>" onclick="return false;" class="actionConfirm">Delete</a>
 			<a href="#" onclick="duplicate.click('/user/duplicate/<?=$userInfo['id']?>/');">Copy</a>
 			<?}?>

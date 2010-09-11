@@ -43,7 +43,9 @@ function auth($back = null) {
 		// captcha
 		$c = akCaptcha::getInstance();
 		
-		if (!$_POST['login'] || !$_POST['password']) {
+		if ($u->attemptsLimitExhausted()) {
+			$d->set('error', sprintf('All attempts have been exhausted. Try again in %u seconds', $u::attemptsTime));
+		} elseif (!$_POST['login'] || !$_POST['password']) {
 			$d->set('error', 'Please fill fields "Login" and "Password".');
 		} elseif (!$c->exists($_POST['captcha'])) {
 			$d->set('error', 'Please enter the right symbols from picture.');
@@ -259,7 +261,7 @@ function erase($uid) {
 /**
  * Edit / See user grants
  */
-function betaGrants($uid = null) {
+function grants($uid = null) {
 	global $g;
 	
 	$uid = (int)$uid;
@@ -288,7 +290,7 @@ function betaGrants($uid = null) {
 				foreach ($value as $k => $v) {
 					if ($v == 'exist') unset($value[$k]);
 				}
-				// if some thing have
+				// if something have
 				if ($value) {
 					foreach ($value as $k => $v) {
 						if (!$v || $v == 'false') unset($value[$k]);
@@ -297,7 +299,7 @@ function betaGrants($uid = null) {
 					
 					if (!$g->update($uid, $id, $value)) {
 						$errorOcurred = true;
-						$d->set('error', 'Can`t set some of grants');
+						$d->set('error', 'Error ocurred. Can`t set some of grants.');
 						break;
 					}
 				}
@@ -308,7 +310,7 @@ function betaGrants($uid = null) {
 			}
 		}
 	}
-	$d->set('fullBetaTree', BetaTree::getInstance()->write($uid));
+	$d->set('fullTree', Tree::getInstance()->write($uid));
 	$d->set('title', sprintf('Grants for user %s', $userInfo['login']));
-	return $d->content('users/betaGrants.php');
+	return $d->content('users/grants.php');
 }

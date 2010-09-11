@@ -100,8 +100,7 @@ class Grants {
 	/**
 	 * Check users grants
 	 * 
-	 * If type is not set, than check for all grants
-	 * If types == all -> than als grants
+	 * If types == all -> than all grants
 	 * 
 	 * @param int $uid - user id
 	 * @param int $sid - grants for section or table with id = $sid
