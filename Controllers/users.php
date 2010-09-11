@@ -44,7 +44,7 @@ function auth($back = null) {
 		$c = akCaptcha::getInstance();
 		
 		if ($u->attemptsLimitExhausted()) {
-			$d->set('error', sprintf('All attempts have been exhausted. Try again in %u seconds', $u::attemptsTime));
+			$d->set('error', sprintf('All attempts have been exhausted. Try again in %u seconds', Users::attemptsTime));
 		} elseif (!$_POST['login'] || !$_POST['password']) {
 			$d->set('error', 'Please fill fields "Login" and "Password".');
 		} elseif (!$c->exists($_POST['captcha'])) {
