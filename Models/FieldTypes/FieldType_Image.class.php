@@ -118,7 +118,7 @@ class FieldType_Image extends FieldTypes {
 					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 				}
 				// delete all previews
-				foreach (glob(sprintf('%s/[0-9]+_[0-9]+_[0-9]+_%s', realpath(dirRoot . self::$previewPath), $newFileName), GLOB_NOSORT) as $file) {
+				foreach (glob(sprintf('%s/[0-9]*_[0-9]*_[0-9]*_%s', realpath(dirRoot . self::$previewPath), $newFileName), GLOB_NOSORT) as $file) {
 					unlink($file);
 				}
 			}

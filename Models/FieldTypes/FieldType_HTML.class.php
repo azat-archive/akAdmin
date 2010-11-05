@@ -40,7 +40,7 @@ class FieldType_HTML extends FieldTypes {
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
 			'<label><strong>%s</strong><textarea name="%s">%s</textarea></label>',
-			$fieldTransltaion, $field, $this->get($value)
+			$fieldTransltaion, $field, $value
 		);
 	}
 
@@ -58,6 +58,6 @@ class FieldType_HTML extends FieldTypes {
 	 * @see parent::set()
 	 */
 	public function set($value = null) {
-		return htmlspecialchars_decode($value);
+		return $value;
 	}
 }

@@ -29,8 +29,8 @@ class FieldType_WYSIWYG_HTML extends FieldType_HTML {
 	 */
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
-			'<label><strong>%s</strong><textarea name="%s" class="jwysiwyg">%s</textarea></label>',
-			$fieldTransltaion, $field, $this->get($value)
+			'<label><strong>%s</strong><textarea name="%s" class="wysiwyg">%s</textarea></label>',
+			$fieldTransltaion, $field, $value
 		);
 	}
 }

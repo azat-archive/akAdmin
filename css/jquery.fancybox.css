@@ -98,7 +98,7 @@
 	right: -15px;
 	width: 30px;
 	height: 30px;
-	background: transparent url('/images/jquery-fancybox//images/jquery-fancybox/fancybox.png') -40px 0px;
+	background: transparent url('/images/jquery-fancybox/fancybox.png') -40px 0px;
 	cursor: pointer;
 	z-index: 1103;
 	display: none;

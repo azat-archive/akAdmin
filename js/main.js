@@ -377,6 +377,24 @@ var multiActions = {
 }
 /*\multiActions*/
 
+/*fancyboxImage*/
+var fancyboxImage = {
+	selector: '.fancyboxImage',
+	init: function() {
+		$(fancyboxImage.selector).fancybox({'autoDimensions': false});
+	}
+}
+/*fancyboxImage*/
+
+/*wysiwyg*/
+var wysiwyg = {
+	selector: '.wysiwyg',
+	init: function() {
+		$(wysiwyg.selector).wysiwyg();
+	}
+}
+/*wysiwyg*/
+
 /*onload
  * 
  * Assign onload event
@@ -388,7 +406,7 @@ $(document).ready(function() {
 	fullTree.init();
 	search.init();
 	multiActions.init();
-	$('.fancyboxImage').fancybox();
-	$('.wysiwyg').wysiwyg();
+	fancyboxImage.init();
+	wysiwyg.init();
 });
 /*\onload*/

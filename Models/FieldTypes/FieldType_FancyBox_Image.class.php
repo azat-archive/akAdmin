@@ -32,7 +32,7 @@ class FieldType_FancyBox_Image extends FieldType_Image {
 		
 		preg_match('@(\d+?)x(\d+?)@Uis', self::$previewSizes[0], $size);
 		return sprintf(
-			'<a href="%s%s" class="fancyboxImage"><img src="%s%u_%u_%u_%s" alt="" title="Zoom in image" /></a>',
+			'<a href="%s%s" class="fancyboxImage" rel="fancyboxImage"><img src="%s%u_%u_%u_%s" alt="" title="Zoom in image" /></a>',
 			self::$path, $value, self::$previewPath, $size[1], $size[2], self::$previewQuality, $value
 		);
 	}

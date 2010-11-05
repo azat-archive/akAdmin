@@ -9,14 +9,14 @@
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.autocomplete.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.fancybox.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.paginator.css" />
-		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.jwysiwyg.css" />
+		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.wysiwyg.css" />
 		
 		<script type="text/javascript" src="<?=dirJs?>jquery.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.autocomplete.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.alerts.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.paginator.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.fancybox.js"></script>
-		<script type="text/javascript" src="<?=dirJs?>jquery.jwysiwyg.js"></script>
+		<script type="text/javascript" src="<?=dirJs?>jquery.wysiwyg.js"></script>
 		
 		<script type="text/javascript" src="<?=dirJs?>functions.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>main.js"></script>
