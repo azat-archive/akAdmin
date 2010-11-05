@@ -163,7 +163,7 @@ class Sections {
 	 * @return bool
 	 */
 	public function erase($id) {
-		global $m;
+		global $m, $g;
 		
 		if ($g->erase(array('sid' => $id)) && $m->sprintf('DELETE FROM %s WHERE id = %u', self::$table, $id)) {
 			return true;

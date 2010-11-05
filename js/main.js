@@ -388,5 +388,7 @@ $(document).ready(function() {
 	fullTree.init();
 	search.init();
 	multiActions.init();
+	$('.fancyboxImage').fancybox();
+	$('.wysiwyg').wysiwyg();
 });
 /*\onload*/

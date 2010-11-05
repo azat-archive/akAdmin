@@ -42,6 +42,8 @@ class Fields {
 		'UnixtimeStamp',
 		'Bool',
 		'String',
+		'WYSIWYG_HTML',
+		'FancyBox_Image',
 	);
 	/**
 	 * Array of types with types by DB type

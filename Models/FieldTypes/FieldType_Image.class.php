@@ -10,8 +10,6 @@
 /**
  * Image FieldType
  * 
- * @TODO add normal links for big img
- * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
  * @licence GPLv2
@@ -33,7 +31,6 @@ class FieldType_Image extends FieldTypes {
 	/**
 	 * Preview quality
 	 * Do not edit this if your don`t understand for what this!
-	 * (After your edit this property old previes is not shows, and not deleted old previews!)
 	 * 
 	 * @var int
 	 */
@@ -41,7 +38,6 @@ class FieldType_Image extends FieldTypes {
 	/**
 	 * Preview sizes
 	 * Do not delete first element of this array if your don`t understand for what this!
-	 * (After your delete first element of this array old previes is not shows, and not deleted old previews!)
 	 * 
 	 * @var array
 	 */
@@ -122,8 +118,8 @@ class FieldType_Image extends FieldTypes {
 					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 				}
 				// delete all previews
-				foreach ($previewSizes as $size) {
-					unlink(sprintf('%s/%u_%u_%u_%s', realpath(dirRoot . self::$previewPath), $size[1], $size[2], self::$previewQuality, $newFileName));
+				foreach (glob(sprintf('%s/[0-9]+_[0-9]+_[0-9]+_%s', realpath(dirRoot . self::$previewPath), $newFileName), GLOB_NOSORT) as $file) {
+					unlink($file);
 				}
 			}
 			$newFileName = null;

@@ -23,6 +23,7 @@ class db extends akMySQLQuery {
 	 * @return void
 	 */
 	public function __construct($server = null, $port = null, $user = null, $password = null, $charset = null, $db = null) {
+		$this->debug = debug;
 		$this->connect($server, $port, $user, $password, $charset, $db);
 	}
 
@@ -36,16 +37,5 @@ class db extends akMySQLQuery {
 		if (!$object) $object = new db($server, $port, $user, $password, $charset, $db);
 		
 		return $object;
-	}
-	
-	/**
-	 * Wrapper for parent::query
-	 * That add log message
-	 */
-	public function query($query) {
-		global $l;
-		$l->sadd('Query executed: %s', $query);
-		
-		return parent::query($query);
 	}
 }

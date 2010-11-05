@@ -10,8 +10,6 @@
 /**
  * Bool FieldType
  * 
- * @TODO add images
- * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
  * @licence GPLv2
@@ -42,7 +40,7 @@ class FieldType_Bool extends FieldTypes {
 	public function getForEdit($field = null, $value = null, $fieldTransltaion = null) {
 		return sprintf(
 			'<label><strong>%s</strong><input type="radio" name="%s" value="1" %s/>Yep<input type="radio" name="%s" value="0" %s/>Nope</label>',
-			$fieldTransltaion, $field, ((bool)$value ? ' checked' : null), $field, (!(bool)$value ? ' checked' : null)
+			$fieldTransltaion, $field, ($value ? ' checked' : null), $field, (!$value ? ' checked' : null)
 		);
 	}
 
