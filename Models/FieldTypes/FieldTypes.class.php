@@ -76,6 +76,7 @@ abstract class FieldTypes {
 	/**
 	 * Erase / delete value
 	 * This will be called for every DB item when delete / erase
+	 * I.e. for delete file
 	 * 
 	 * @param string $value - value
 	 * @return void
@@ -87,6 +88,7 @@ abstract class FieldTypes {
 	/**
 	 * Duplicate / copy value
 	 * This will be called for every DB item when duplicate / copy
+	 * I.e. for duplicate file or create a link of file
 	 * 
 	 * @param string $value - value
 	 * @return mixed
