@@ -96,3 +96,8 @@ div#mainWrapper div#searchPanel input[name=q] {width: 200px;}
 .actionSelect {margin: 10px 0 10px 0;}
 .actionSelect a {font-weight: bold; font-size: 1.1em;}
 /*\select of avaliable actions for selected items*/
+
+/*Log*/
+pre.akLog {display: none; overflow-x: scroll;}
+#showLog {text-align: center; font-weight: bold; cursor: pointer;}
+/*\Log*/

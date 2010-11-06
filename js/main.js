@@ -395,6 +395,23 @@ var wysiwyg = {
 }
 /*wysiwyg*/
 
+/*log*/
+var log = {
+	selector: 'pre.akLog',
+	init: function() {
+		if ($(log.selector).length < 1) return; // no log
+		$('div#copyright').after('<div id="showLog" onclick="log.click();">Show log</div>');
+	},
+	click: function() {
+		if ($(log.selector).css('display') != 'none') {
+			$(log.selector).hide();
+		} else {
+			$(log.selector).show();
+		}
+	}
+}
+/*\log*/
+
 /*onload
  * 
  * Assign onload event
@@ -408,5 +425,6 @@ $(document).ready(function() {
 	multiActions.init();
 	fancyboxImage.init();
 	wysiwyg.init();
+	log.init();
 });
 /*\onload*/
