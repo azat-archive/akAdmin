@@ -122,9 +122,10 @@ class Items {
 		$this->lastResult = $m->fetchAll($resource);
 		// get for val every type of items
 		if (is_array($this->lastResult)) {
+			// User defined PHP FieldTypes
 			foreach ($this->lastResult as &$item) {
 				foreach ($item as $key => &$field) {
-					if ($this->fieldTypes && $this->fieldTypes[$key] && isset($f::$types[$this->fieldTypes[$key]])) {
+					if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
 						if ($forEdit) {
 							$field = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
 						} else {
@@ -145,8 +146,9 @@ class Items {
 		$emptyItem = array();
 		$f = Fields::getInstance();
 		
+		// User defined PHP FieldTypes
 		foreach ($this->fields as $key => $fieldTranslation) {
-			if ($this->fieldTypes && $this->fieldTypes[$key] && isset($f::$types[$this->fieldTypes[$key]])) {
+			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
 				$emptyItem[] = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, null, $this->fields[$key]);
 			}
 		}
@@ -198,16 +200,16 @@ class Items {
 		
 		global $m;
 		
-		$f = Fields::getInstance();
-		
 		$this->lastResult = $m->fetch($m->sprintf(
 			'SELECT `%s` FROM %s WHERE %s = %u',
 			join('`,`', array_map(array($m, 'escape'), array_keys($this->fields))), $this->table, $m->escape($this->fieldAutoIncrement), $id
 		));
 		
 		if ($this->lastResult) {
+			// User defined PHP FieldTypes
+			$f = Fields::getInstance();
 			foreach ($this->lastResult as $key => &$field) {
-				if ($this->fieldTypes && $this->fieldTypes[$key] && isset($f::$types[$this->fieldTypes[$key]])) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
 					if ($forEdit) {
 						$field = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
 					} else {
@@ -228,7 +230,7 @@ class Items {
 	 * @return mixed
 	 */
 	public function erase($ids) {
-		$this->validate(false);
+		$this->validate();
 		
 		if (!$ids) return false;
 		
@@ -238,6 +240,23 @@ class Items {
 		if (empty($ids)) return false;
 		
 		global $m;
+		
+		$result = $m->fetchAll($m->sprintf(
+			'SELECT `%s` FROM %s WHERE %s IN (%s)',
+			join('`,`', array_map(array($m, 'escape'), array_keys($this->fields))), $this->table, $m->escape($this->fieldAutoIncrement), join(',', $ids)
+		));
+		if (!$result) return false;
+		
+		// User defined PHP FieldTypes
+		$f = Fields::getInstance();
+		foreach ($result as &$item) {
+			foreach ($item as $key => &$field) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+					$field = $f::$types[$this->fieldTypes[$key]]->erase($field);
+				}
+			}
+		}
+		
 		return $m->sprintf(
 			'DELETE FROM %s WHERE %s IN (%s)',
 			$this->table, $m->escape($this->fieldAutoIncrement), join(',', $ids)
@@ -255,7 +274,7 @@ class Items {
 		$f = Fields::getInstance();
 		
 		foreach ($data as $key => &$field) {
-			if ($this->fieldTypes && $this->fieldTypes[$key] && isset($f::$types[$this->fieldTypes[$key]])) {
+			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
 				$field = $f::$types[$this->fieldTypes[$key]]->set($field);
 			}
 		}

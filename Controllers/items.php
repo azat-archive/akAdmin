@@ -182,7 +182,7 @@ function edit($sid, $id) {
  * Erase / delete item [Multi]
  */
 function erase() {
-	global $user, $d, $g, $i, $s;
+	global $user, $d, $g, $i, $s, $f;
 	
 	$sid = (int)$d->getParam('sid');
 	$ids = ((mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') ? $_POST['id'] : (int)$d->getParam('id'));
@@ -216,6 +216,24 @@ function erase() {
 		$d->set('error', sprintf('Your don`t have auto_increment field in table %s.', $i->table));
 		return $d->content('default/error.php');
 	}
+	
+	// get avaliable fields (that set up in Settings page of section-table)
+	$allAvaliableFields = $f->getTranslationForSection($sid);
+	// no fields is set
+	if (!$allAvaliableFields) {
+		$d->set('error', sprintf('No fields is avaliable. Please set it up in <a href="/section/settings/%u">settings</a>.', $sid));
+		return $d->content('default/error.php');
+	}
+	
+	// add auto_increment field to the begining of array
+	$fields = array($i->fieldAutoIncrement => $i->fieldAutoIncrement);
+	foreach ($allAvaliableFields as $field) {
+		$fields[$field['field']] = $field['value'];
+		$fieldTypes[$field['field']] = $field['type'];
+	}
+	// set fields
+	$i->fields = $fields;
+	$i->fieldTypes = $fieldTypes;
 	
 	if (!$i->erase($ids)) {
 		$d->set('error', 'Error occured while deleting one of items. Please try again later.');

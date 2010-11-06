@@ -72,4 +72,13 @@ abstract class FieldTypes {
 	 * @return string
 	 */
 	abstract public function set($value = null);
+
+	/**
+	 * Erase / delete value
+	 * This will be called for every DB item when delete / erase
+	 * 
+	 * @param string $value - value
+	 * @return string
+	 */
+	public function erase($value = null) {}
 }

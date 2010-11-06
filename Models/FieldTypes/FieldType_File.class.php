@@ -82,11 +82,7 @@ class FieldType_File extends FieldTypes {
 		
 		// delete old file, if we select checkbox "delete" or new file is uploaded
 		if ($delete || ($newFile && $newFile['error'] != 4)) {
-			if ($oldFile && file_exists($oldFile)) {
-				if (!unlink($oldFile)) {
-					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
-				}
-			}
+			$this->erase($value['old']);
 			$newFileName = null;
 		}
 		// copy new file
@@ -102,5 +98,17 @@ class FieldType_File extends FieldTypes {
 		}
 		
 		return $newFileName;
+	}
+
+	/**
+	 * @see parent::erase()
+	 */
+	public function erase($value = null) {
+		$valueFileName = sprintf('%s/%s', realpath(dirRoot . self::$path), $value);
+		if ($value && file_exists($valueFileName)) {
+			if (!unlink($valueFileName)) {
+				throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
+			}
+		}
 	}
 }

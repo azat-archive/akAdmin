@@ -113,15 +113,7 @@ class FieldType_Image extends FieldTypes {
 		
 		// delete old file, if we select checkbox "delete" or new file is uploaded
 		if ($delete || ($newFile && $newFile['error'] != 4)) {
-			if ($oldFile && file_exists($oldFile)) {
-				if (!unlink($oldFile)) {
-					throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
-				}
-				// delete all previews
-				foreach (glob(sprintf('%s/[0-9]*_[0-9]*_[0-9]*_%s', realpath(dirRoot . self::$previewPath), $newFileName), GLOB_NOSORT) as $file) {
-					unlink($file);
-				}
-			}
+			$this->erase($value['old']);
 			$newFileName = null;
 		}
 		// copy new file
@@ -150,5 +142,21 @@ class FieldType_Image extends FieldTypes {
 		}
 		
 		return $newFileName;
+	}
+
+	/**
+	 * @see parent::erase()
+	 */
+	public function erase($value = null) {
+		$valueFileName = sprintf('%s/%s', realpath(dirRoot . self::$path), $value);
+		if ($value && file_exists($valueFileName)) {
+			if (!unlink($valueFileName)) {
+				throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
+			}
+			// delete all previews
+			foreach (glob(sprintf('%s/[0-9]*_[0-9]*_[0-9]*_%s', realpath(dirRoot . self::$previewPath), $value), GLOB_NOSORT) as $file) {
+				unlink($file);
+			}
+		}
 	}
 }
