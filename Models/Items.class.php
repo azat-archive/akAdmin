@@ -63,7 +63,7 @@ class Items {
 			$this->fields = $fields;
 			try {
 				$this->validate();
-			} catch (akException $e) {
+			} catch (ItemsException $e) {
 				unset($this->table);
 				unset($this->fields);
 				// throwing next
@@ -122,7 +122,7 @@ class Items {
 		$this->lastResult = $m->fetchAll($resource);
 		// get for val every type of items
 		if (is_array($this->lastResult)) {
-			// User defined PHP FieldTypes
+			// PHP defined FieldTypes
 			foreach ($this->lastResult as &$item) {
 				foreach ($item as $key => &$field) {
 					if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
@@ -146,7 +146,7 @@ class Items {
 		$emptyItem = array();
 		$f = Fields::getInstance();
 		
-		// User defined PHP FieldTypes
+		// PHP defined FieldTypes
 		foreach ($this->fields as $key => $fieldTranslation) {
 			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
 				$emptyItem[] = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, null, $this->fields[$key]);
@@ -206,7 +206,7 @@ class Items {
 		));
 		
 		if ($this->lastResult) {
-			// User defined PHP FieldTypes
+			// PHP defined FieldTypes
 			$f = Fields::getInstance();
 			foreach ($this->lastResult as $key => &$field) {
 				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
@@ -223,7 +223,7 @@ class Items {
 	}
 
 	/**
-	 * Delete item
+	 * Erase / delete item
 	 * 
 	 * @see this::validate()
 	 * @param int or array of int $ids - ids
@@ -232,7 +232,7 @@ class Items {
 	public function erase($ids) {
 		$this->validate();
 		
-		if (!$ids) return false;
+		if (!$ids || !$this->fieldAutoIncrement) return false;
 		
 		if (!is_array($ids)) $ids = array((int)$ids);
 		else $ids = array_map('intval', $ids);
@@ -247,12 +247,15 @@ class Items {
 		));
 		if (!$result) return false;
 		
-		// User defined PHP FieldTypes
+		// PHP defined FieldTypes
 		$f = Fields::getInstance();
 		foreach ($result as &$item) {
 			foreach ($item as $key => &$field) {
 				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
-					$field = $f::$types[$this->fieldTypes[$key]]->erase($field);
+					// check if method is overriden
+					try {
+						$f::$types[$this->fieldTypes[$key]]->erase($field);
+					} catch (FieldTypesException $e) {}
 				}
 			}
 		}
@@ -261,6 +264,58 @@ class Items {
 			'DELETE FROM %s WHERE %s IN (%s)',
 			$this->table, $m->escape($this->fieldAutoIncrement), join(',', $ids)
 		);
+	}
+
+	/**
+	 * Duplicate / copy item
+	 * 
+	 * @see this::validate()
+	 * @param int or array of int $ids - ids
+	 * @return mixed
+	 * 
+	 * @throws ItemsException
+	 */
+	public function duplicate($ids, $num) {
+		$this->validate();
+		
+		if (!$ids || !$this->fieldAutoIncrement || (int)$num < 1) return false;
+		
+		if (!is_array($ids)) $ids = array((int)$ids);
+		else $ids = array_map('intval', $ids);
+		
+		if (empty($ids)) return false;
+		
+		global $m;
+		
+		$result = $m->fetchAll($m->sprintf(
+			'SELECT `%s` FROM %s WHERE %s IN (%s)',
+			join('`,`', array_map(array($m, 'escape'), array_keys($this->fields))), $this->table, $m->escape($this->fieldAutoIncrement), join(',', $ids)
+		));
+		if (!$result) return false;
+		
+		// PHP defined FieldTypes
+		$f = Fields::getInstance();
+		foreach ($result as &$item) {
+			foreach ($item as $key => &$field) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+					// check if method is overriden
+					try {
+						$field = $f::$types[$this->fieldTypes[$key]]->duplicate($field);
+					} catch (FieldTypesException $e) {}
+				}
+			}
+			$cId = $item[$this->fieldAutoIncrement];
+			// delete auto increment field, it update by DB server
+			unset($item[$this->fieldAutoIncrement]);
+			
+			// create duplicates
+			for ($i = 1; $i <= $num; $i++) {
+				if (!$this->add($item, false)) {
+					throw new ItemsException($i, $cId);
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -303,11 +358,12 @@ class Items {
 	 * 
 	 * @see this::validate()
 	 * @param array $data - data to add
+	 * @param bool $transform - transform data using PHP defined FieldTypes or not (@see this::duplicate())
 	 * @return mixed
 	 */
-	public function add(array $data) {
+	public function add(array $data, $transform = true) {
 		$this->validate(false);
-		$this->transformDataForUpdate($data);
+		if ($transform) $this->transformDataForUpdate($data);
 		
 		global $m;
 		if ($m->sprintf('INSERT INTO %s SET %s', $this->table, $m->join($data))) {
@@ -322,10 +378,19 @@ class Items {
 	 * @param bool $validateFields - validate fields property or not (insert, erase, update methods are not need it)
 	 * @return void
 	 * 
-	 * @throws akException
+	 * @throws ItemsException
 	 */
 	protected function validate($validateFields = true) {
-		if (!$this->table) throw new akException(sprintf('Table "%s" is not set', $this->table));
-		if ($validateFields && !$this->fields) throw new akException(sprintf('Fields in table "%s" is not set', $this->table));
+		if (!$this->table) throw new ItemsException(sprintf('Table "%s" is not set', $this->table));
+		if ($validateFields && !$this->fields) throw new ItemsException(sprintf('Fields in table "%s" is not set', $this->table));
 	}
 }
+
+/**
+ * Items Exception model
+ * 
+ * @author Azat Khuzhin <dohardgopro@gmail.com>
+ * @package akAdmin
+ * @licence GPLv2
+ */
+class ItemsException extends BaseException {}

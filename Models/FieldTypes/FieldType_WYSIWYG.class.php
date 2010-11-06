@@ -8,7 +8,7 @@
  */
 
 /**
- * WYSIWYG HTML FieldType using jwysiwyg
+ * WYSIWYG FieldType using jwysiwyg
  * 
  * @link https://github.com/akzhan/jwysiwyg
  * 
@@ -17,10 +17,10 @@
  * @licence GPLv2
  */
 
-class FieldType_WYSIWYG_HTML extends FieldType_HTML {
+class FieldType_WYSIWYG extends FieldType_HTML {
 	static function getInstance() {
 		static $object;
-		if (!$object) $object = new FieldType_WYSIWYG_HTML;
+		if (!$object) $object = new FieldType_WYSIWYG;
 		return $object;
 	}
 

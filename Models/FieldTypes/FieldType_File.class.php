@@ -68,7 +68,7 @@ class FieldType_File extends FieldTypes {
 	/**
 	 * @see parent::set()
 	 * 
-	 * @throws akException if error occured while deleting file or uploading new file
+	 * @throws FieldType_FileException if error occured while deleting file or uploading new file
 	 */
 	public function set($value = null) {
 		// old file (to delete)
@@ -87,13 +87,11 @@ class FieldType_File extends FieldTypes {
 		}
 		// copy new file
 		if ($newFile && $newFile['error'] != 4) {
-			$newFileName = randomStr(10);
-			while (file_exists(sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				$newFileName = randomStr(10);
-			}
+			$newFileInfo = pathinfo($newFile['name']);
+			$newFileName = genFileName(realpath(dirRoot . self::$path), $newFileInfo['extension']);
 			
 			if (!copy($newFile['tmp_name'], sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				throw new akException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
+				throw new FieldType_FileException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
 			}
 		}
 		
@@ -102,13 +100,24 @@ class FieldType_File extends FieldTypes {
 
 	/**
 	 * @see parent::erase()
+	 * 
+	 * @throws FieldType_FileException if error occured while deleting file
 	 */
 	public function erase($value = null) {
 		$valueFileName = sprintf('%s/%s', realpath(dirRoot . self::$path), $value);
 		if ($value && file_exists($valueFileName)) {
 			if (!unlink($valueFileName)) {
-				throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
+				throw new FieldType_FileException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 			}
 		}
 	}
 }
+
+/**
+ * File FieldType Exceptionssss
+ * 
+ * @author Azat Khuzhin <dohardgopro@gmail.com>
+ * @package akAdmin
+ * @licence GPLv2
+ */
+class FieldType_FileException extends FieldTypesException {}

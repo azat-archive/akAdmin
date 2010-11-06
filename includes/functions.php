@@ -18,12 +18,20 @@
 /**
  * Redirect
  * 
- * @param string $url
+ * @param string $url - url
+ * @param mixed $status - status
  * @return void
  */
-function redirect($url = null) {
+function redirect($url = null, $status = 'HTTP/1.1 301 Moved Permanently') {
 	if (!headers_sent() && $url) {
-		header('Location: ' . $url);
+		if (is_string($status)) {
+			header($status);
+			header('Location: ' . $url);
+		} elseif (is_numeric($status)) {
+			header('Location: ' . $url, $status);
+		} else {
+			header('Location: ' . $url);
+		}
 		die;
 	}
 }
@@ -181,4 +189,22 @@ function arrayEraseEmpty(array &$array) {
 		if (!$value) unset($array[$k]);
 	}
 	return $array;
+}
+
+/**
+ * Generate file name
+ * 
+ * @param string $path - path to search new file in
+ * @param string $ext - extension of file
+ * @param int $length
+ * @return string
+ */
+function genFileName($path, $ext = null, $length = 10) {
+	$fn = randomStr($length) . ($ext ? '.' . $ext : null);
+	if (mb_substr($path, -1) != '/') $path .= '/';
+	
+	while (file_exists($path . $fn)) {
+		$fn = randomStr($length) . ($ext ? '.' . $ext : null);
+	}
+	return $fn;
 }

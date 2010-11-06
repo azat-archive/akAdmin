@@ -34,33 +34,33 @@ abstract class FieldTypes {
 
 	/**
 	 * Get value
-	 * This will be called for every DB item when select it from DB
+	 * This will be called for every DB item when get it
 	 * 
 	 * @param string $value - value
-	 * @return string
+	 * @return mixed
 	 */
 	abstract public function get($value = null);
 
 	/**
-	 * Get value
+	 * Get value for edit
 	 * This will be called for every DB item when select it from DB
 	 * And it called when edit item (in FORM)
 	 * 
 	 * @param string $field - field
 	 * @param string $value - value
 	 * @param string $fieldTransltaion - translation for field
-	 * @return string
+	 * @return mixed
 	 */
 	abstract public function getForEdit($field = null, $value = null, $fieldTransltaion = null);
 
 	/**
-	 * Get value
+	 * Get value for search
 	 * This will be called for every DB item when select it from DB
 	 * And it callled when search in Table
 	 * 
 	 * @param string $field - field
 	 * @param string $value - value
-	 * @return string
+	 * @return mixed
 	 */
 	abstract public function getForSearch($field = null, $value = null);
 
@@ -69,7 +69,7 @@ abstract class FieldTypes {
 	 * This will be called for every DB item when insert / update
 	 * 
 	 * @param string $value - value
-	 * @return string
+	 * @return mixed
 	 */
 	abstract public function set($value = null);
 
@@ -78,7 +78,29 @@ abstract class FieldTypes {
 	 * This will be called for every DB item when delete / erase
 	 * 
 	 * @param string $value - value
-	 * @return string
+	 * @return void
 	 */
-	public function erase($value = null) {}
+	public function erase($value = null) {
+		throw new FieldTypesException('Must been overridden in children');
+	}
+
+	/**
+	 * Duplicate / copy value
+	 * This will be called for every DB item when duplicate / copy
+	 * 
+	 * @param string $value - value
+	 * @return mixed
+	 */
+	public function duplicate($value = null) {
+		throw new FieldTypesException('Must been overridden in children');
+	}
 }
+
+/**
+ * PHP defined FieldType Exception model
+ * 
+ * @author Azat Khuzhin <dohardgopro@gmail.com>
+ * @package akAdmin
+ * @licence GPLv2
+ */
+class FieldTypesException extends BaseException {}

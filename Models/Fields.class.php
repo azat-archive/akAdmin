@@ -31,6 +31,8 @@ class Fields {
 	 * Avaliable types
 	 * For every type must exist class FieldType_{VALUE} in folder ./FieldTypes
 	 * 
+	 * Please add aditional types to the and of array!
+	 * 
 	 * @var array
 	 */
 	static $avaliableTypes = array(
@@ -42,8 +44,9 @@ class Fields {
 		'UnixtimeStamp',
 		'Bool',
 		'String',
-		'WYSIWYG_HTML',
-		'FancyBox_Image',
+		'WYSIWYG',
+		'FancyBoxImage',
+		'FileDuplicate',
 	);
 	/**
 	 * Array of types with types by DB type

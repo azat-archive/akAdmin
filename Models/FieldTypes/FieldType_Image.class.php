@@ -94,7 +94,7 @@ class FieldType_Image extends FieldTypes {
 	/**
 	 * @see parent::set()
 	 * 
-	 * @throws akException
+	 * @throws FieldType_ImageException
 	 * 				if error occured while deleting image or uploading new image
 	 * 				but not if error occured file creating or deleting preview for image
 	 */
@@ -118,14 +118,11 @@ class FieldType_Image extends FieldTypes {
 		}
 		// copy new file
 		if ($newFile && $newFile['error'] != 4) {
-			$ext = akExec::getFileExt($newFile['name']);
-			$newFileName = sprintf('%s.%s', randomStr(10), $ext);
-			while (file_exists(sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				$newFileName = sprintf('%s.%s', randomStr(10), $ext);
-			}
+			$newFileInfo = pathinfo($newFile['name']);
+			$newFileName = genFileName(realpath(dirRoot . self::$path), $newFileInfo['extension']);
 			
 			if (!copy($newFile['tmp_name'], sprintf('%s/%s', realpath(dirRoot . self::$path), $newFileName))) {
-				throw new akException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
+				throw new FieldType_ImageException(sprintf('Error occured while copy new file. Path: "%s".', self::$path));
 			}
 			
 			// generate previews
@@ -146,12 +143,16 @@ class FieldType_Image extends FieldTypes {
 
 	/**
 	 * @see parent::erase()
+	 * 
+	 * @throws FieldType_ImageException
+	 * 				if error occured while deleting image
+	 * 				but not if error occured file deleting preview of image
 	 */
 	public function erase($value = null) {
 		$valueFileName = sprintf('%s/%s', realpath(dirRoot . self::$path), $value);
 		if ($value && file_exists($valueFileName)) {
 			if (!unlink($valueFileName)) {
-				throw new akException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
+				throw new FieldType_ImageException(sprintf('Error occured while deleting old file. Path: "%s".', self::$path));
 			}
 			// delete all previews
 			foreach (glob(sprintf('%s/[0-9]*_[0-9]*_[0-9]*_%s', realpath(dirRoot . self::$previewPath), $value), GLOB_NOSORT) as $file) {
@@ -160,3 +161,12 @@ class FieldType_Image extends FieldTypes {
 		}
 	}
 }
+
+/**
+ * Image FieldType Exceptionssss
+ * 
+ * @author Azat Khuzhin <dohardgopro@gmail.com>
+ * @package akAdmin
+ * @licence GPLv2
+ */
+class FieldType_ImageException extends FieldTypesException {}

@@ -235,7 +235,12 @@ function erase() {
 	$i->fields = $fields;
 	$i->fieldTypes = $fieldTypes;
 	
-	if (!$i->erase($ids)) {
+	$result = false;
+	try {
+		$result = $i->erase($ids);
+	} catch (ItemsException $e) {}
+	
+	if (!$result) {
 		$d->set('error', 'Error occured while deleting one of items. Please try again later.');
 		return $d->content('default/error.php');
 	}
@@ -295,37 +300,22 @@ function duplicate() {
 	$fields = array($i->fieldAutoIncrement => $i->fieldAutoIncrement);
 	foreach ($allAvaliableFields as $field) {
 		$fields[$field['field']] = $field['value'];
+		$fieldTypes[$field['field']] = $field['type'];
 	}
 	// set fields
 	$i->fields = $fields;
+	$i->fieldTypes = $fieldTypes;
 	
-	// run by all items need to copy
-	if (!is_array($ids)) $ids = array($ids);
-	foreach ($ids as $id) {
-		// get items details
-		$item = $i->details($id);
-		if (!$item) {
-			$d->set('error', sprintf('Error item width number %u is not exist. Please try again later.', $id));
-			return $d->content('default/error.php');
-		}
-		
-		// delete auto increment field, it nums update by DB server
-		unset($item[$i->fieldAutoIncrement]);
-		
-		// creating copies/ duplicate
-		for ($inc = 1; $inc <= $num; $inc++) {
-			// if in one of copy error is occured
-			if (!($i->add($item))) {
-				$d->set(
-					'error',
-					sprintf(
-						'Error occured while creating %u copy of item width numer %u. Please try again later.',
-						$inc, $id
-					)
-				);
-				return $d->content('default/error.php');
-			}
-		}
+	$result = false;
+	try {
+		$result = $i->duplicate($ids, $num);
+	} catch (ItemsException $e) {
+		$d->set('error', sprintf('Error occured while creating %u copy of item with numer %u. Please try again later.', $e->getMessage(), $e->getCode()));
+		return $d->content('default/error.php');
+	}
+	if (!$result) {
+		$d->set('error', 'Error occured while creating copies of items. Please try again later.');
+		return $d->content('default/error.php');
 	}
 	
 	redirect('/section/details/' . $sid);

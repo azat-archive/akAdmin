@@ -15,7 +15,7 @@
 			<a href="/user/edit/<?=$item['id']?>">Edit</a><br />
 			<a href="/user/erase/<?=$item['id']?>" onclick="return false;" class="actionConfirm">Delete</a><br />
 			<a href="/user/duplicate/<?=$item['id']?>" onclick="duplicate.click('/user/duplicate/<?=$item['id']?>/');">Copy</a>
-			<nobr><a href="/user/beta_grants/<?=$item['id']?>">Grants (Beta version)</a></nobr>
+			<a href="/user/grants/<?=$item['id']?>">Grants</a>
 		</td>
 	</tr>
 	<?}?>

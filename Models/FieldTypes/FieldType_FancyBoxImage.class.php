@@ -17,10 +17,10 @@
  * @licence GPLv2
  */
 
-class FieldType_FancyBox_Image extends FieldType_Image {
+class FieldType_FancyBoxImage extends FieldType_Image {
 	static function getInstance() {
 		static $object;
-		if (!$object) $object = new FieldType_FancyBox_Image;
+		if (!$object) $object = new FieldType_FancyBoxImage;
 		return $object;
 	}
 

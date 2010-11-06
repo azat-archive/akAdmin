@@ -213,10 +213,10 @@ class Sections {
 	 * @param bool $full - return all fields and it's types and indexes (default: false), and add type without length and extra
 	 * @return mixed
 	 * 
-	 * @throws akException
+	 * @throws SectionsException
 	 */
 	public function getTableFields($tableName, $full = false) {
-		if (!$this->isTableExists($tableName)) throw new akException('Such table is not exist');
+		if (!$this->isTableExists($tableName)) throw new SectionsException('Such table is not exist');
 		
 		global $m;
 		
@@ -243,8 +243,6 @@ class Sections {
 	 * 
 	 * @param string $tableName - name of table
 	 * @return mixed
-	 * 
-	 * @throws akException
 	 */
 	public function getTableAutoIncrementField($tableName, $full = false) {
 		$fields = $this->getTableFields($tableName, true);
@@ -256,3 +254,12 @@ class Sections {
 		return null;
 	}
 }
+
+/**
+ * Sections Exception model
+ * 
+ * @author Azat Khuzhin <dohardgopro@gmail.com>
+ * @package akAdmin
+ * @licence GPLv2
+ */
+class SectionsException extends BaseException {}
