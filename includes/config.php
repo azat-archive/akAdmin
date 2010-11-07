@@ -55,3 +55,6 @@ define('debug', true);
 define('project', 'test');
 // how much items per page
 define('itemsPerPage', 100);
+
+// version
+define('akAdminVersion', 2.0);
