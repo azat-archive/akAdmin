@@ -169,9 +169,8 @@ class Items {
 		
 		global $m;
 		
-		$f = Fields::getInstance();
-		
 		if ($q) {
+			$f = Fields::getInstance();
 			$where = array();
 			foreach ($this->fieldTypes as $field => &$type) {
 				$where[] = $f::$types[$type]->getForSearch($field, $q);

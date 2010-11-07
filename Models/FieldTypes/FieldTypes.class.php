@@ -58,6 +58,8 @@ abstract class FieldTypes {
 	 * This will be called for every DB item when select it from DB
 	 * And it callled when search in Table
 	 * 
+	 * @attention This method needs manual mysql escape (@see db::escape(), $GLOBALS['m']->escape())
+	 * 
 	 * @param string $field - field
 	 * @param string $value - value
 	 * @return mixed
@@ -76,7 +78,8 @@ abstract class FieldTypes {
 	/**
 	 * Erase / delete value
 	 * This will be called for every DB item when delete / erase
-	 * I.e. for delete file
+	 * 
+	 * @example for delete file
 	 * 
 	 * @param string $value - value
 	 * @return void
@@ -88,7 +91,8 @@ abstract class FieldTypes {
 	/**
 	 * Duplicate / copy value
 	 * This will be called for every DB item when duplicate / copy
-	 * I.e. for duplicate file or create a link of file
+	 * 
+	 * @example for duplicate file or create a link of file
 	 * 
 	 * @param string $value - value
 	 * @return mixed
