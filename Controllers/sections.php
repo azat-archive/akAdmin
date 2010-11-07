@@ -72,7 +72,7 @@ function add() {
 				if (!$g->update($user['id'], $sectionId)) {
 					$d->set('error', 'Error occured while adding grants for a new section.');
 				} else {
-					redirect('/section/details/' . $sectionId);
+					$d->redirect('/section/details/' . $sectionId);
 				}
 			} else {
 				$d->set('error', 'Error occured while adding a new section. Please try again later.');
@@ -93,7 +93,7 @@ function edit($sid) {
 	$sid = (int)$sid;
 	// no such section
 	$sectionInfo = $s->details(array('id' => $sid));
-	if (!$sectionInfo) redirect('/default/404');
+	if (!$sectionInfo) $d->redirect('/default/404');
 	
 	if ($sectionInfo['pid']) {
 		$parentInfo = $s->simpleList(array('id' => $sectionInfo['pid']), 0, 1);
@@ -118,7 +118,7 @@ function edit($sid) {
 			$d->set('error', sprintf('Your don`t have permission to add to section %s.', $_POST['parentTitle']));
 			return $d->content('default/error.php');
 		} elseif ($s->edit(array('title' => $_POST['title'], 'description' => $_POST['description'], 'pid' => $_POST['pid'], 'tableName' => $_POST['tableName']), $sid)) {
-				redirect('/section/details/' . $sid);
+			$d->redirect('/section/details/' . $sid);
 		} else {
 			$d->set('error', sprintf('Error occured while editing section %s. Please try again later.', $sectionInfo['title']));
 		}
@@ -140,7 +140,7 @@ function erase($sid) {
 	$sid = (int)$sid;
 	// no such section
 	$sectionInfo = $s->details(array('id' => $sid));
-	if (!$sectionInfo) redirect('/default/404');
+	if (!$sectionInfo) $d->redirect('/default/404');
 	
 	// check grants
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'drop')) {
@@ -160,8 +160,8 @@ function erase($sid) {
 		return $d->content('default/error.php');
 	}
 	// success delete, redirect to parent section if it exists, or to list of sections
-	if ($sectionInfo['pid']) redirect('/section/details/' . $sectionInfo['pid']);
-	else redirect('/sections');
+	if ($sectionInfo['pid']) $d->redirect('/section/details/' . $sectionInfo['pid']);
+	else $d->redirect('/sections');
 }
 
 /**
@@ -173,7 +173,7 @@ function details($sid) {
 	$sid = (int)$sid;
 	// current selected section
 	$currentSection = $s->details(array('id' => $sid), 0, 1);
-	if (!$currentSection) redirect('/default/404');
+	if (!$currentSection) $d->redirect('/default/404');
 	
 	// check grants
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'select')) {
@@ -267,7 +267,7 @@ function settings($sid) {
 	$sid = (int)$sid;
 	// current selected section
 	$currentSection = $s->details(array('id' => $sid), 0, 1);
-	if (!$currentSection) redirect('/default/404');
+	if (!$currentSection) $d->redirect('/default/404');
 	
 	// check grants
 	if (!$user['isAdmin'] && !$g->check($user['id'], $sid, 'alter')) {
@@ -327,7 +327,7 @@ function settings($sid) {
 			}
 		}
 		
-		redirect('/section/details/' . $sid);
+		$d->redirect('/section/details/' . $sid);
 	}
 	
 	$d->set('DBTypes', Fields::$avaliableTypesByDBTypes);

@@ -19,9 +19,9 @@
  * Main
  */
 function main() {
-	global $user;
+	global $user, $d;
 	
-	redirect('/' . ($user ? 'sections' : 'user/auth'));
+	$d->redirect('/' . ($user ? 'sections' : 'user/auth'));
 }
 
 /**
@@ -84,5 +84,6 @@ function notFound() {
  * redirecting to auth, with back parameter encode in base64
  */
 function defaultAuth() {
-	redirect('/user/auth/' . base64_encode($_SERVER['REQUEST_URI']));
+	global $d;
+	$d->redirect('/user/auth/' . base64_encode($_SERVER['REQUEST_URI']));
 }

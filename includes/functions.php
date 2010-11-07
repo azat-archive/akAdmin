@@ -16,27 +16,6 @@
  */
 
 /**
- * Redirect
- * 
- * @param string $url - url
- * @param mixed $status - status
- * @return void
- */
-function redirect($url = null, $status = 'HTTP/1.1 301 Moved Permanently') {
-	if (!headers_sent() && $url) {
-		if (is_string($status)) {
-			header($status);
-			header('Location: ' . $url);
-		} elseif (is_numeric($status)) {
-			header('Location: ' . $url, $status);
-		} else {
-			header('Location: ' . $url);
-		}
-		die;
-	}
-}
-
-/**
  * Get from some vars
  * For HTML forms
  * 

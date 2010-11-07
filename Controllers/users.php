@@ -52,7 +52,7 @@ function auth($back = null) {
 		} elseif ($u->auth(array('login' => $_POST['login'], 'password' => md5($_POST['password'])))) {
 			if ($back) $back = base64_decode($back);
 			if (!$back || mb_substr($back, 0, 1) != '/') $back = '/' . $back;
-			redirect($back);
+			$d->redirect($back);
 		} else {
 			$d->set('error', 'Error no such combination of login and password.');
 		}
@@ -65,9 +65,9 @@ function auth($back = null) {
  * Logout user
  */
 function logout() {
-	global $u;
+	global $u, $d;
 	$u->logout();
-	redirect('/');
+	$d->redirect('/');
 }
 
 /**
@@ -86,7 +86,7 @@ function details($uid) {
 	// no such user
 	$userInfo = $u->details(array('id' => $uid));
 	if (!$userInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	$d->set('title', 'Details of user ' . $userInfo['login']);
@@ -120,7 +120,7 @@ function add() {
 		} elseif ($u->isSuchUserExist($_POST['login'])) {
 			$d->set('error', 'Such user already exists. Please try another login name.');
 		} elseif ($userId = $u->add(array('login' => $_POST['login'], 'password' => md5($_POST['password']), 'isAdmin' => (isset($_POST['isAdmin']) ? true : false), 'email' => $_POST['email']))) {
-			redirect('/user/details/' . $userId);
+			$d->redirect('/user/details/' . $userId);
 		} else {
 			$d->set('error', 'Error occured while adding a new user. Please try again later.');
 		}
@@ -146,7 +146,7 @@ function edit($uid) {
 	// no such user
 	$userInfo = $u->details(array('id' => $uid));
 	if (!$userInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
@@ -172,7 +172,7 @@ function edit($uid) {
 			if ($_POST['password']) $params['password'] = md5($_POST['password']);
 			
 			if ($u->edit($params, $uid)) {
-				redirect('/user/details/' . $uid);
+				$d->redirect('/user/details/' . $uid);
 			} else {
 				$d->set('error', sprintf('Error occured while editing user %s. Please try again later.', $userInfo['login']));
 			}
@@ -195,7 +195,7 @@ function duplicate($uid, $num) {
 	
 	// not all params are set
 	if (!$uid || !$num) {
-		redirect('/default/error');
+		$d->redirect('/default/error');
 	}
 	
 	// check grants
@@ -207,7 +207,7 @@ function duplicate($uid, $num) {
 	// no such user
 	$userInfo = $u->details(array('id' => $uid));
 	if (!$userInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	// delete params, that are different for every user
@@ -231,7 +231,7 @@ function duplicate($uid, $num) {
 		}
 	}
 	
-	redirect('/users');
+	$d->redirect('/users');
 }
 
 /**
@@ -255,7 +255,7 @@ function erase($uid) {
 	}
 	
 	// success delete, redirect to user list
-	redirect('/users');
+	$d->redirect('/users');
 }
 
 /**
@@ -266,7 +266,7 @@ function grants($uid = null) {
 	
 	$uid = (int)$uid;
 	
-	if (!$uid) redirect('/default/404');
+	if (!$uid) $d->redirect('/default/404');
 	
 	global $d, $user, $u;
 	// is not admin => can`t edit user grants
@@ -278,7 +278,7 @@ function grants($uid = null) {
 	// no such user
 	$userInfo = $u->details(array('id' => $uid));
 	if (!$userInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
@@ -306,7 +306,7 @@ function grants($uid = null) {
 			}
 			// if not errors redirect to user details
 			if (!isset($errorOcurred)) {
-				redirect('/user/details/' . $uid);
+				$d->redirect('/user/details/' . $uid);
 			}
 		}
 	}

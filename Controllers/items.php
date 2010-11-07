@@ -32,7 +32,7 @@ function add($sid) {
 	
 	$sectionInfo = $s->details(array('id' => $sid));
 	if (!$sectionInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (!$s->isTableExists($sectionInfo['tableName'])) {
@@ -80,7 +80,7 @@ function add($sid) {
 		}
 		
 		if ($id = $i->add($_POST)) {
-			redirect('/section/details/' . $sid);
+			$d->redirect('/section/details/' . $sid);
 		}
 		$d->set('error', 'Error occured while adding a new item.');
 	}
@@ -103,7 +103,7 @@ function edit($sid, $id) {
 	$id = (int)$id;
 	$sectionInfo = $s->details(array('id' => $sid));
 	if (!$sectionInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (!$s->isTableExists($sectionInfo['tableName'])) {
@@ -148,7 +148,7 @@ function edit($sid, $id) {
 	// get items details
 	$item = $i->details($id, true);
 	if (!$item) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
@@ -164,7 +164,7 @@ function edit($sid, $id) {
 		}
 		
 		if ($i->edit($_POST, $id)) {
-			redirect('/section/details/' . $sid);
+			$d->redirect('/section/details/' . $sid);
 		}
 		$d->set('error', 'Error occured while adding a new item.');
 	}
@@ -189,12 +189,12 @@ function erase() {
 	
 	// not all params are set
 	if ($sid <= 0 || !$ids) {
-		redirect('/default/error');
+		$d->redirect('/default/error');
 	}
 	
 	$sectionInfo = $s->details(array('id' => $sid));
 	if (!$sectionInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (!$s->isTableExists($sectionInfo['tableName'])) {
@@ -245,7 +245,7 @@ function erase() {
 		return $d->content('default/error.php');
 	}
 	
-	redirect('/section/details/' . $sid);
+	$d->redirect('/section/details/' . $sid);
 }
 
 /**
@@ -260,12 +260,12 @@ function duplicate() {
 	
 	// not all params are set
 	if ($sid <= 0 || !$ids || $num <= 0) {
-		redirect('/default/error');
+		$d->redirect('/default/error');
 	}
 	
 	$sectionInfo = $s->details(array('id' => $sid));
 	if (!$sectionInfo) {
-		redirect('/default/404');
+		$d->redirect('/default/404');
 	}
 	
 	if (!$s->isTableExists($sectionInfo['tableName'])) {
@@ -318,5 +318,5 @@ function duplicate() {
 		return $d->content('default/error.php');
 	}
 	
-	redirect('/section/details/' . $sid);
+	$d->redirect('/section/details/' . $sid);
 }

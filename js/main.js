@@ -60,15 +60,13 @@ var autoComplete = {
 /*autocomplete section list*/
 
 /*
- * deleteing projects and tables
- * 
- * Deleting comfirm dialog
+ * Confirm dialog
  * Using jConfirm
  */
-var deletingConfirm = {
+var actionConfirm = {
 	selector: 'a.actionConfirm',
 	init: function() {
-		$(deletingConfirm.selector).click(function(e) {
+		$(actionConfirm.selector).click(function(e) {
 			e.preventDefault(this);
 			
 			jConfirm('Are your shure your want to continue?', 'Confirm', function(r) {
@@ -419,7 +417,7 @@ var log = {
 $(document).ready(function() {
 	mainError.init();
 	autoComplete.init();
-	deletingConfirm.init();
+	actionConfirm.init();
 	fullTree.init();
 	search.init();
 	multiActions.init();

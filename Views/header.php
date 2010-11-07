@@ -39,6 +39,7 @@
 			<div class="userInfo">
 				Hi, <a href="/user/details/<?=$user['id']?>"><?=$user['login']?></a>
 				<?if (isset($user['lastTime']) && $user['lastTime']) {?>, last visit <?=dh('d.m', $user['lastTime'])?><?}?>
+				<a class="actionConfirm" href="/user/logout">logout</a>
 			</div>
 			<ul class="menu">
 				<li><a href="/users">Users</a></li>
