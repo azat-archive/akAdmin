@@ -266,7 +266,7 @@ var search = {
 		var searchVal = $('input[name=q]', el).val();
 		
 		if ((search.defaultValue != searchVal) && searchVal) {
-			location.href = el.action + searchVal;
+			location.href = el.action + encodeURIComponent(searchVal);
 		}
 		
 		return false;

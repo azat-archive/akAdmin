@@ -26,7 +26,7 @@ $GLOBALS['f'] = Fields::getInstance();
 function ajaxAll() {
 	global $d, $s, $l;
 	
-	$q = $d->getParam('q');
+	$q = urldecode($d->getParam('q'));
 	$excludeId = (int)$d->getParam('excludeId');
 	
 	// do not write log at the end

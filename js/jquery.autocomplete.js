@@ -1,6 +1,6 @@
 /*
  * Edited by Azat Khuzhin <dohardgopro@gmail.com>
- * To use JSON
+ * To use JSON & to notmal url escape
  */
 
 jQuery.autocomplete = function(input, options) {
@@ -558,11 +558,13 @@ jQuery.autocomplete = function(input, options) {
 	};
 
 	function makeUrl(q) {
-		var		sep = options.url.indexOf('?') == -1 ? '?' : '&'; 
-		var		url = options.url + sep + options.queryParam + '=' + encodeURI(q);
+		var		sep = options.url.indexOf('?') == -1 ? '?' : '&';
+		// @editor Azat Khuzhin (encodeURI to encodeURIComponent)
+		var		url = options.url + sep + options.queryParam + '=' + encodeURIComponent(q);
 
 		for (var i in options.extraParams) {
-			url += '&' + i + '=' + encodeURI(options.extraParams[i]);
+			// @editor Azat Khuzhin (encodeURI to encodeURIComponent)
+			url += '&' + i + '=' + encodeURIComponent(options.extraParams[i]);
 		}
 
 		return url;
