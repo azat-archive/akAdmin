@@ -108,7 +108,7 @@ class Items {
 		if ($q) {
 			$where = array();
 			foreach ($this->fieldTypes as $field => &$type) {
-				$where[] = $f::$types[$type]->getForSearch($field, $q);
+				$where[] = Fields::$types[$type]->getForSearch($field, $q);
 			}
 			$where = join(' OR ', arrayEraseEmpty($where));
 		} else {
@@ -125,11 +125,11 @@ class Items {
 			// PHP defined FieldTypes
 			foreach ($this->lastResult as &$item) {
 				foreach ($item as $key => &$field) {
-					if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+					if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
 						if ($forEdit) {
-							$field = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
+							$field = Fields::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
 						} else {
-							$field = $f::$types[$this->fieldTypes[$key]]->get($field);
+							$field = Fields::$types[$this->fieldTypes[$key]]->get($field);
 						}
 					}
 					
@@ -148,8 +148,8 @@ class Items {
 		
 		// PHP defined FieldTypes
 		foreach ($this->fields as $key => $fieldTranslation) {
-			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
-				$emptyItem[] = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, null, $this->fields[$key]);
+			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
+				$emptyItem[] = Fields::$types[$this->fieldTypes[$key]]->getForEdit($key, null, $this->fields[$key]);
 			}
 		}
 		
@@ -173,7 +173,7 @@ class Items {
 			$f = Fields::getInstance();
 			$where = array();
 			foreach ($this->fieldTypes as $field => &$type) {
-				$where[] = $f::$types[$type]->getForSearch($field, $q);
+				$where[] = Fields::$types[$type]->getForSearch($field, $q);
 			}
 			$where = join(' OR ', arrayEraseEmpty($where));
 		} else {
@@ -208,11 +208,11 @@ class Items {
 			// PHP defined FieldTypes
 			$f = Fields::getInstance();
 			foreach ($this->lastResult as $key => &$field) {
-				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
 					if ($forEdit) {
-						$field = $f::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
+						$field = Fields::$types[$this->fieldTypes[$key]]->getForEdit($key, $field, $this->fields[$key]);
 					} else {
-						$field = $f::$types[$this->fieldTypes[$key]]->get($field);
+						$field = Fields::$types[$this->fieldTypes[$key]]->get($field);
 					}
 				}
 			}
@@ -250,10 +250,10 @@ class Items {
 		$f = Fields::getInstance();
 		foreach ($result as &$item) {
 			foreach ($item as $key => &$field) {
-				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
 					// check if method is overriden
 					try {
-						$f::$types[$this->fieldTypes[$key]]->erase($field);
+						Fields::$types[$this->fieldTypes[$key]]->erase($field);
 					} catch (FieldTypesException $e) {}
 				}
 			}
@@ -296,10 +296,10 @@ class Items {
 		$f = Fields::getInstance();
 		foreach ($result as &$item) {
 			foreach ($item as $key => &$field) {
-				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
+				if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
 					// check if method is overriden
 					try {
-						$field = $f::$types[$this->fieldTypes[$key]]->duplicate($field);
+						$field = Fields::$types[$this->fieldTypes[$key]]->duplicate($field);
 					} catch (FieldTypesException $e) {}
 				}
 			}
@@ -328,8 +328,8 @@ class Items {
 		$f = Fields::getInstance();
 		
 		foreach ($data as $key => &$field) {
-			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset($f::$types[$this->fieldTypes[$key]])) {
-				$field = $f::$types[$this->fieldTypes[$key]]->set($field);
+			if ($this->fieldTypes && (isset($this->fieldTypes[$key]) && $this->fieldTypes[$key]) && isset(Fields::$types[$this->fieldTypes[$key]])) {
+				$field = Fields::$types[$this->fieldTypes[$key]]->set($field);
 			}
 		}
 		
