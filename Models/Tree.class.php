@@ -8,7 +8,7 @@
  */
 
 /**
- * TREE
+ * Tree
  * 
  * @author Azat Khuzhin <dohardgopro@gmail.com>
  * @package akAdmin
@@ -56,12 +56,9 @@ class Tree extends Sections {
 		
 		global $m;
 		// formated query, to get sections and user grants, tableName field only for write ico
-		static $formatedQuery;
-		if (!$formatedQuery) {
-			$formatedQuery = 	'SELECT s.id, s.title, s.tableName, ' .
+		static $formatedQuery =	'SELECT s.id, s.title, s.tableName, ' .
 						'(SELECT grants FROM %s g WHERE g.uid = %u AND g.sid = s.id) grants ' .
 						'FROM %s s WHERE s.pid = %u ORDER BY s.id ASC';
-		}
 		
 		static $depthCounter = 0;
 		// if root -> than flush counter
@@ -146,7 +143,7 @@ class Tree extends Sections {
 				
 				$string .= sprintf(
 					'<li onkeyup="return %u;"><img src="/images/%s" alt="%s" />%s%s</li>' . "\n",
-					$item['id'], ($item['tableName'] ? 'file24.png' : 'folder24.png'), ($item['tableName'] ? 'Table' : 'Section'), $item['title'], $grantsString
+					$item['id'], ($item['tableName'] ? 'application-document.png' : 'blue-folder--arrow.png'), ($item['tableName'] ? 'Table' : 'Section'), $item['title'], $grantsString
 				);
 				if (isset($item['childrens']) && $item['childrens']) {
 					$string .= $this->write($uid, $depth, false, $item['childrens']);

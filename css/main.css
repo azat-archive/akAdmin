@@ -76,6 +76,7 @@ ul.menu li.active a {color: #000000;}
 
 /*tree*/
 div#tree {font-size: 1.5em; margin-bottom: 15px;}
+div#tree .sub {padding-left: 17px; background: url('/images/arrow-000-small.png') 0px 100% no-repeat;}
 /*\tree*/
 
 /*noAnything*/
@@ -88,7 +89,7 @@ ul#fullTree li {padding-bottom: 5px; cursor: pointer;}
 /*\fullTree*/
 
 /*search panel*/
-div#mainWrapper div#searchPanel {position: absolute; top: 0; left: 80%; text-align: left; margin: 20px;}
+div#mainWrapper div#searchPanel {position: absolute; top: 0; left: 80%; text-align: left; padding: 20px; background: url('/images/application-search-result.png') 0px 50% no-repeat;}
 div#mainWrapper div#searchPanel input[name=q] {width: 200px;}
 /*\search panel*/
 

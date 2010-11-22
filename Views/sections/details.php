@@ -12,17 +12,19 @@
 	</tr>
 	<?$i = 0; foreach ($sections as &$section) { $i++ ?>
 	<tr>
-		<td class="class<?=($i % 2)+1?>"><?=($section['tableName'] ? '<img src="/images/file24.png" alt="Table" />' : '<img src="/images/folder24.png" alt="Section" />')?></td>
+		<td class="class<?=($i % 2)+1?>"><?=($section['tableName'] ? '<img src="/images/application-document.png" alt="Table" />' : '<img src="/images/blue-folder--arrow.png" alt="Section" />')?></td>
 		<td class="class<?=($i % 2)+1?>"><a href="/section/details/<?=$section['id']?>"><?=$section['title']?></a></td>
 		<td class="class<?=($i % 2)+1?>"><?=getTextLimited($section['description'])?></td>
 		<td class="class<?=($i % 2)+1?>"><?=$section['subSections']?></td>
 		<td class="class<?=($i % 2)+1?>"><?=$section['tables']?></td>
 		<td class="class<?=($i % 2)+1?>">
-			<a href="/section/edit/<?=$section['id']?>">Edit</a><br />
-			<a href="/section/erase/<?=$section['id']?>" onclick="return false;" class="actionConfirm">Delete</a>
-			<?if ($section['tableName']) {?>
-			<br /><a href="/section/settings/<?=$section['id']?>">Settings</a>
-			<?}?>
+			<nobr>
+				<a href="/section/edit/<?=$section['id']?>"><img src="/images/edit.png" alt="Edit" title="Edit" /></a>
+				<a href="/section/erase/<?=$section['id']?>" onclick="return false;" class="actionConfirm"><img src="/images/eraser.png" alt="Delete" title="Delete" /></a>
+				<?if ($section['tableName']) {?>
+				<a href="/section/settings/<?=$section['id']?>"><img src="/images/controller.png" alt="Settings" title="Settings" /></a>
+				<?}?>
+			</nobr>
 		</td>
 	</tr>
 	<?}?>

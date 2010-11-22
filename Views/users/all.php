@@ -12,10 +12,12 @@
 		<td class="class<?=($i % 2)+1?>"><?=($item['isAdmin'] ? 'x' : null)?></td>
 		<td class="class<?=($i % 2)+1?>"><?=dh('m.d', $item['lastTime'])?></td>
 		<td class="class<?=($i % 2)+1?>">
-			<a href="/user/edit/<?=$item['id']?>">Edit</a><br />
-			<a href="/user/erase/<?=$item['id']?>" onclick="return false;" class="actionConfirm">Delete</a><br />
-			<a href="/user/duplicate/<?=$item['id']?>" onclick="duplicate.click('/user/duplicate/<?=$item['id']?>/');">Copy</a>
-			<a href="/user/grants/<?=$item['id']?>">Grants</a>
+			<nobr>
+				<a href="/user/edit/<?=$item['id']?>"><img src="/images/edit.png" alt="Edit" title="Edit" /></a>
+				<a href="/user/erase/<?=$item['id']?>" onclick="return false;" class="actionConfirm"><img src="/images/eraser.png" alt="Delete" title="Delete" /></a>
+				<a href="/user/duplicate/<?=$item['id']?>/1" onclick="duplicate.click('/user/duplicate/<?=$item['id']?>/');"><img src="/images/document-copy.png" alt="Copy" title="Copy" /></a>
+				<a href="/user/grants/<?=$item['id']?>"><img src="/images/user--plus.png" alt="Grants" title="Grants" /></a>
+			</nobr>
 		</td>
 	</tr>
 	<?}?>

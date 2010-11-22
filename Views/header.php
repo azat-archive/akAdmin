@@ -3,21 +3,23 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=<?=charset?>" />
 		<title>Admin System<?=(isset($headTitle) && $headTitle ? ' | ' . $headTitle : (isset($title) && $title ? ' | ' . $title : null))?></title>
-		
+
+		<link rel="shortcut icon" href="/images/favicon.ico" /> 
+
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>main.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.alerts.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.autocomplete.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.fancybox.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.paginator.css" />
 		<link rel="stylesheet" type="text/css" href="<?=dirCss?>jquery.wysiwyg.css" />
-		
+
 		<script type="text/javascript" src="<?=dirJs?>jquery.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.autocomplete.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.alerts.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.paginator.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.fancybox.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>jquery.wysiwyg.js"></script>
-		
+
 		<script type="text/javascript" src="<?=dirJs?>functions.js"></script>
 		<script type="text/javascript" src="<?=dirJs?>main.js"></script>
 	</head>

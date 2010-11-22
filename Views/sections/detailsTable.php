@@ -49,8 +49,8 @@
 			
 			<?if ($fieldAutoIncrement) {?>
 			<td class="class<?=($i % 2)+1?>">
-				<a href="/section/items/<?=$currentSection['id']?>/erase/<?=$item[$fieldAutoIncrement]?>" onclick="return false;" class="actionConfirm">Delete</a><br />
-				<a href="#" onclick="duplicate.click('/section/items/<?=$currentSection['id']?>/duplicate/<?=$item[$fieldAutoIncrement]?>/');">Copy</a><br />
+				<a href="/section/items/<?=$currentSection['id']?>/erase/<?=$item[$fieldAutoIncrement]?>" onclick="return false;" class="actionConfirm"><img src="/images/eraser.png" alt="Delete" title="Delete" /></a>
+				<a href="/section/items/<?=$currentSection['id']?>/duplicate/<?=$item[$fieldAutoIncrement]?>/1" onclick="duplicate.click('/section/items/<?=$currentSection['id']?>/duplicate/<?=$item[$fieldAutoIncrement]?>/');"><img src="/images/document-copy.png" alt="Copy" title="Copy" /></a><br />
 			</td>
 			<?}?>
 		</tr>

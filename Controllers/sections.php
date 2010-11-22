@@ -44,7 +44,7 @@ function all() {
 	
 	$d->set('headTitle', 'Sections');
 	$d->set('sections', $s->all(array('pid' => 0)));
-	return $d->content('sections/all.php');
+	return $d->content('sections/details.php');
 }
 
 /**

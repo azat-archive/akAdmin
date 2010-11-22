@@ -15,7 +15,7 @@
 			<?if ($user['isAdmin']) {?>
 			<a href="/user/grants/<?=$userInfo['id']?>">Grants</a>
 			<a href="/user/erase/<?=$userInfo['id']?>" onclick="return false;" class="actionConfirm">Delete</a>
-			<a href="#" onclick="duplicate.click('/user/duplicate/<?=$userInfo['id']?>/');">Copy</a>
+			<a href="/user/duplicate/<?=$userInfo['id']?>/1" onclick="duplicate.click('/user/duplicate/<?=$userInfo['id']?>/');">Copy</a>
 			<?}?>
 			</nobr>
 		</strong>
