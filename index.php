@@ -81,6 +81,6 @@ else {
 /**
  * CAPTCHA
  */
-$d->add('/captcha', 'captcha.php');
+$d->add('/captcha', 'captcha.php', 'get');
 
 $d->run();
