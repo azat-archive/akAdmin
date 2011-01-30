@@ -15,7 +15,7 @@
  * @licence GPLv2
  */
  
-require_once dirname(__FILE__) . '/includes/config.php';
+require_once __DIR__ . '/includes/config.php';
 require_once dirIncludes . 'autoload.php';
 require_once dirIncludes . 'functions.php';
 require_once dirIncludes . 'httpStatuses.php';
@@ -23,7 +23,12 @@ require_once dirControllers . 'default.php';
 
 session_start();
 
-set_include_path(sprintf('%s:%s:%s:%s', get_include_path(), dirRoot, dirAkLib, dirModels));
+set_include_path(
+	get_include_path(), PATH_SEPARATOR,
+	dirRoot, PATH_SEPARATOR,
+	dirAkLib, PATH_SEPARATOR,
+	dirModels, PATH_SEPARATOR
+);
 mb_internal_encoding(charset);
 
 // log

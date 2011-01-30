@@ -16,7 +16,7 @@
  * @licence GPLv2
  */
 
-require_once dirname(__FILE__) . '/common.php';
+require_once __DIR__ . '/common.php';
 
 /**
  * Controllers from "Controllers/default.php"

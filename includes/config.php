@@ -21,7 +21,7 @@ define('dirCss', '/css/');
 define('dirJs', '/js/');
 
 // server dirs
-define('dirRoot', realpath(dirname(__FILE__) . '/../') . '/');
+define('dirRoot', realpath(__DIR__ . '/../') . '/');
 define('dirIncludes', dirRoot . 'includes/');
 define('dirAkLib', dirIncludes . 'akLib/');
 define('dirUpload', dirRoot . 'upload/');

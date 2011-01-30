@@ -84,7 +84,7 @@ class Fields {
 		
 		// Array of objects with types
 		if (empty(self::$types)) {
-			$path = realpath(dirname(__FILE__) . '/FieldTypes/') . '/';
+			$path = realpath(__DIR__ . '/FieldTypes/') . '/';
 			require_once $path . 'FieldTypes.class.php';
 			
 			foreach (self::$avaliableTypes as $type) {
