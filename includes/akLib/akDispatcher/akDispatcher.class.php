@@ -227,7 +227,7 @@ class akDispatcher {
 			$this->params = array();
 			
 			// founded
-			if (preg_match($this->pattern($event['path']), $this->requestQuery, $matches) && ($event['method'] == $this->requestMethod || $event['method'] == 'both')) {
+			if (($matches = $this->checkRoute($event))) {
 				// delete numeric params
 				// first delete than add,
 				// because we need to call user func with only string keys
@@ -533,6 +533,19 @@ class akDispatcher {
 	}
 
 	/**
+	 * Check route for matches
+	 * 
+	 * @param array $event - event
+	 * @return mixed
+	 */
+	protected function checkRoute(array $event) {
+		if (($event['method'] == $this->requestMethod || $event['method'] == 'both') && preg_match($this->pattern($event['path']), $this->requestQuery, $matches)) {
+			return $matches;
+		}
+		return false;
+	}
+
+	/**
 	 * Compare for sortEvents [sort strings]
 	 * 
 	 * @param mixed $a
@@ -550,5 +563,14 @@ class akDispatcher {
 		$n2 = substr_count($b['path'], ':');
 		if ($n1 === $n2) return 0;
 		return ($n1 > $n2);
+	}
+	
+	/**
+	 * Return request method
+	 * 
+	 * @return string // in lower case
+	 */
+	public function getRequestMethod() {
+		return $this->requestMethod;
 	}
 }

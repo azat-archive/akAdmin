@@ -39,7 +39,7 @@ function auth($back = null) {
 	// not authorized
 	global $d, $u;
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		// captcha
 		$c = akCaptcha::getInstance();
 		
@@ -106,7 +106,7 @@ function add() {
 		return $d->content('default/error.php');
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		if ($_POST['login']) $_POST['login'] = strip_tags($_POST['login']);
 		
 		if (!$_POST['login'] || !$_POST['password']) {
@@ -149,7 +149,7 @@ function edit($uid) {
 		$d->redirect('/default/404');
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		if ($_POST['login']) $_POST['login'] = strip_tags($_POST['login']);
 		
 		if (!$_POST['login']) {
@@ -281,7 +281,7 @@ function grants($uid = null) {
 		$d->redirect('/default/404');
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		if (!isset($_POST['id']) || !$_POST['id']) {
 			$d->set('error', 'No grants for changing selected');
 		} else {

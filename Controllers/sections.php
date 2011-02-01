@@ -53,7 +53,7 @@ function all() {
 function add() {
 	global $user, $d, $s, $g;
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		if ($_POST['title']) $_POST['title'] = strip_tags($_POST['title']);
 		if ($_POST['description']) $_POST['description'] = strip_tags($_POST['description']);
 		if ($_POST['tableName']) $_POST['tableName'] = strip_tags($_POST['tableName']);
@@ -106,7 +106,7 @@ function edit($sid) {
 		return $d->content('default/error.php');
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		if ($_POST['title']) $_POST['title'] = strip_tags($_POST['title']);
 		if ($_POST['description']) $_POST['description'] = strip_tags($_POST['description']);
 		if ($_POST['tableName']) $_POST['tableName'] = strip_tags($_POST['tableName']);
@@ -307,7 +307,7 @@ function settings($sid) {
 		}
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		// delete not existed fields in the table
 		foreach ($_POST as $k => &$v) {
 			if (!isset($fields[$k])) unset($_POST[$k]);

@@ -67,7 +67,7 @@ function add($sid) {
 	$i->fields = $fields;
 	$i->fieldTypes = $fieldTypes;
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		// delete not existed fields
 		foreach ($_POST as $key => &$value) {
 			if (!in_array($key, array_keys($fields))) {
@@ -151,7 +151,7 @@ function edit($sid, $id) {
 		$d->redirect('/default/404');
 	}
 	
-	if (mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+	if ($d->getRequestMethod() == 'post') {
 		// delete not existed fields
 		foreach ($_POST as $key => &$value) {
 			if (!in_array($key, array_keys($fields))) {
@@ -185,7 +185,7 @@ function erase() {
 	global $user, $d, $g, $i, $s, $f;
 	
 	$sid = (int)$d->getParam('sid');
-	$ids = ((mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') ? $_POST['id'] : (int)$d->getParam('id'));
+	$ids = (($d->getRequestMethod() == 'post') ? $_POST['id'] : (int)$d->getParam('id'));
 	
 	// not all params are set
 	if ($sid <= 0 || !$ids) {
@@ -255,7 +255,7 @@ function duplicate() {
 	global $user, $d, $g, $i, $s, $f;
 	
 	$sid = (int)$d->getParam('sid');
-	$ids = ((mb_strtolower($_SERVER['REQUEST_METHOD']) == 'post') ? $_POST['id'] : (int)$d->getParam('id'));
+	$ids = (($d->getRequestMethod() == 'post') ? $_POST['id'] : (int)$d->getParam('id'));
 	$num = (int)$d->getParam('num');
 	
 	// not all params are set
