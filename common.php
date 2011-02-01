@@ -24,10 +24,10 @@ require_once dirControllers . 'default.php';
 session_start();
 
 set_include_path(
-	get_include_path(), PATH_SEPARATOR,
-	dirRoot, PATH_SEPARATOR,
-	dirAkLib, PATH_SEPARATOR,
-	dirModels, PATH_SEPARATOR
+	get_include_path() . PATH_SEPARATOR .
+	dirRoot . PATH_SEPARATOR .
+	dirAkLib . PATH_SEPARATOR .
+	dirModels . PATH_SEPARATOR
 );
 mb_internal_encoding(charset);
 
